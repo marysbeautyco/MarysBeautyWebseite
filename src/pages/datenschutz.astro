@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { sanityFetch } from '../lib/sanity';
+import { legalPageQuery, siteSettingsQuery } from '../lib/queries';
+import { legalPagesFallback, siteSettingsFallback } from '../lib/content';
+import { richTextToHtml } from '../lib/richtext';
+import type { LegalPage, SiteSettings } from '../types/sanity';
+
+const siteSettings = (await sanityFetch<SiteSettings>(siteSettingsQuery)) ?? siteSettingsFallback;
+const seite =
+  (await sanityFetch<LegalPage>(legalPageQuery, { slug: 'datenschutz' })) ?? legalPagesFallback.datenschutz;
+const inhaltHtml = richTextToHtml(seite.inhalt);
+---
+
+<BaseLayout title={seite.titel} description={`Datenschutzerklärung von ${siteSettings.studioName}.`} seo={seite.seo}>
+  <section class="section">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h1 class="section-title">{seite.titel}</h1>
+          <hr class="divider" />
+          <div class="legal-content" set:html={inhaltHtml} />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

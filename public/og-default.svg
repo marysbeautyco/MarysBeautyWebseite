@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#fbf7f1" />
+  <rect x="40" y="40" width="1120" height="550" fill="none" stroke="#d9b48a" stroke-width="2" />
+  <text x="600" y="300" font-family="Georgia, 'Playfair Display', serif" font-size="64" fill="#2d2a27" text-anchor="middle">Mary's Beauty</text>
+  <text x="600" y="360" font-family="Georgia, sans-serif" font-size="28" fill="#534d47" text-anchor="middle">Kosmetikstudio für zeitlose Schönheit</text>
+</svg>

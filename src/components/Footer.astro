@@ -1,0 +1,80 @@
+---
+import type { SiteSettings } from '../types/sanity';
+
+interface Props {
+  siteSettings: SiteSettings;
+}
+
+const { siteSettings } = Astro.props;
+const jahr = new Date().getFullYear();
+
+const socialLabels: Record<string, string> = {
+  instagram: 'Instagram',
+  facebook: 'Facebook',
+  tiktok: 'TikTok',
+  pinterest: 'Pinterest',
+  youtube: 'YouTube',
+};
+
+const telefonHref = `tel:${siteSettings.telefon.replace(/[^+\d]/g, '')}`;
+const emailHref = `mailto:${siteSettings.email}`;
+---
+
+<footer class="footer section pb-4">
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-lg-4">
+        <p class="h5 mb-3" style="font-family: var(--bs-font-serif, serif);">{siteSettings.studioName}</p>
+        {siteSettings.claim && <p class="opacity-75">{siteSettings.claim}</p>}
+        {siteSettings.socialLinks && siteSettings.socialLinks.length > 0 && (
+          <ul class="list-inline mt-3">
+            {siteSettings.socialLinks.map((link) => (
+              <li class="list-inline-item me-3">
+                <a href={link.url} target="_blank" rel="noopener noreferrer">
+                  {socialLabels[link.plattform] ?? link.plattform}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <div class="col-lg-4">
+        <p class="h6 text-uppercase opacity-75 mb-3">Kontakt</p>
+        <address class="mb-0">
+          {siteSettings.adresse.strasse}<br />
+          {siteSettings.adresse.plz} {siteSettings.adresse.ort}<br />
+          <a href={telefonHref}>{siteSettings.telefon}</a><br />
+          <a href={emailHref}>{siteSettings.email}</a>
+        </address>
+        {siteSettings.kartenlink && (
+          <a href={siteSettings.kartenlink} target="_blank" rel="noopener noreferrer" class="d-inline-block mt-2">
+            Anfahrt &amp; Karte öffnen →
+          </a>
+        )}
+      </div>
+
+      <div class="col-lg-4">
+        <p class="h6 text-uppercase opacity-75 mb-3">Öffnungszeiten</p>
+        <ul class="list-unstyled mb-0">
+          {siteSettings.oeffnungszeiten.map((zeile) => (
+            <li class="d-flex justify-content-between gap-3">
+              <span>{zeile.tag}</span>
+              <span class="opacity-75">{zeile.zeiten}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <hr class="my-4 opacity-25" />
+
+    <div class="d-flex flex-wrap justify-content-between gap-2 small opacity-75">
+      <p class="mb-0">&copy; {jahr} {siteSettings.studioName}. Alle Rechte vorbehalten.</p>
+      <nav aria-label="Rechtliches">
+        <a href="/impressum" class="me-3">Impressum</a>
+        <a href="/datenschutz">Datenschutz</a>
+      </nav>
+    </div>
+  </div>
+</footer>

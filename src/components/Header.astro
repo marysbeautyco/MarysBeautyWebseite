@@ -1,0 +1,88 @@
+---
+import BookingButton from './BookingButton.astro';
+import type { SiteSettings } from '../types/sanity';
+import { urlFor } from '../lib/image';
+
+interface Props {
+  siteSettings: SiteSettings;
+}
+
+const { siteSettings } = Astro.props;
+const logoUrl = urlFor(siteSettings.logo, 240);
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/', label: 'Start' },
+  { href: '/behandlungen', label: 'Behandlungen' },
+  { href: '/ueber-uns', label: 'Über uns' },
+  { href: '/galerie', label: 'Galerie' },
+  { href: '/kontakt', label: 'Kontakt' },
+];
+
+function isActive(href: string) {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="border-bottom" style="border-color: var(--bs-border-color);">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white py-3" aria-label="Haupt­navigation">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+        {logoUrl ? (
+          <img src={logoUrl} alt={siteSettings.studioName} height="40" />
+        ) : (
+          <span>{siteSettings.studioName}</span>
+        )}
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        aria-controls="haupt-navigation"
+        aria-expanded="false"
+        aria-label="Navigation öffnen"
+        data-nav-toggle
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="haupt-navigation">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+          {navLinks.map((link) => (
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href={link.href}
+                aria-current={isActive(link.href) ? 'page' : undefined}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+          <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+            <BookingButton url={siteSettings.planityUrl} size="sm" />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  // Minimaler, framework-freier Navigation-Toggle (ersetzt bootstrap.bundle.js /
+  // Popper, da weder Dropdowns noch Tooltips benötigt werden – hält das
+  // JavaScript-Budget der Seite bewusst klein).
+  const toggle = document.querySelector('[data-nav-toggle]');
+  const menu = document.getElementById('haupt-navigation');
+
+  toggle?.addEventListener('click', () => {
+    const istOffen = menu?.classList.toggle('show');
+    toggle.setAttribute('aria-expanded', String(Boolean(istOffen)));
+  });
+
+  menu?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      menu.classList.remove('show');
+      toggle?.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>

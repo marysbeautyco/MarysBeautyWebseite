@@ -1,0 +1,65 @@
+// Zentrale Design-Tokens für Mary's Beauty.
+// Diese Datei überschreibt Bootstrap-Variablen VOR dem Bootstrap-Import,
+// damit das gesamte Grid-, Komponenten- und Utility-System automatisch
+// die gewünschte, hochwertige Farb- und Typografiesprache übernimmt.
+
+// --- Farbpalette -----------------------------------------------------------
+$cream: #fbf7f1; // Cremeweiß – Seitenhintergrund
+$beige: #f3e9dc; // Beige – alternative Flächen
+$sand: #e8d8c3; // Sandfarben – Rahmen, Trenner
+$rose: #e4c7c3; // dezentes Rosé – Akzent
+$champagne: #d9b48a; // Champagner-Gold – Haupt-Akzent / Buttons
+$anthracite: #2d2a27; // dunkles Anthrazit – Fließtext
+$anthracite-soft: #534d47; // abgeschwächtes Anthrazit – Sekundärtext
+
+$white: #ffffff;
+$body-bg: $cream;
+$body-color: $anthracite;
+
+$primary: $champagne;
+$secondary: $rose;
+$light: $beige;
+$dark: $anthracite;
+
+$theme-colors: (
+  'primary': $primary,
+  'secondary': $secondary,
+  'success': #8a9a7b,
+  'info': #8aa6a3,
+  'warning': #d9b48a,
+  'danger': #b5695f,
+  'light': $light,
+  'dark': $dark,
+);
+
+// --- Typografie --------------------------------------------------------
+$font-family-sans-serif: 'Jost', system-ui, -apple-system, 'Segoe UI', sans-serif;
+$headings-font-family: 'Playfair Display', Georgia, serif;
+$headings-font-weight: 500;
+$headings-color: $anthracite;
+$body-color-secondary: $anthracite-soft;
+
+$font-size-base: 1.05rem;
+$line-height-base: 1.65;
+$headings-line-height: 1.2;
+
+// --- Formensprache -------------------------------------------------------
+$border-radius: 0.6rem;
+$border-radius-sm: 0.4rem;
+$border-radius-lg: 1rem;
+$border-color: $sand;
+
+$btn-border-radius: 2rem; // weiche, pillenförmige Buttons
+$btn-padding-y: 0.7rem;
+$btn-padding-x: 1.75rem;
+$btn-font-weight: 500;
+
+$navbar-light-color: $anthracite;
+$navbar-light-hover-color: $champagne;
+$navbar-light-active-color: $anthracite;
+
+$link-color: $anthracite;
+$link-hover-color: $champagne;
+$link-decoration: none;
+
+$enable-negative-margins: true;

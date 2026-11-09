@@ -1,0 +1,63 @@
+---
+import { urlFor } from '../lib/image';
+import { safeJsonLd } from '../lib/safeJson';
+import type { Seo as SeoType, SiteSettings } from '../types/sanity';
+
+interface Props {
+  title: string;
+  description: string;
+  seo?: SeoType;
+  siteSettings: SiteSettings;
+  structuredData?: Record<string, unknown>[];
+}
+
+const { title, description, seo, siteSettings, structuredData = [] } = Astro.props;
+
+const metaTitle = seo?.metaTitle?.trim() || title;
+const metaDescription = seo?.metaDescription?.trim() || description;
+const noIndex = Boolean(seo?.noIndex);
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImageUrl = urlFor(seo?.ogImage, 1200) || new URL('/og-default.svg', Astro.site).toString();
+
+const fullTitle = `${metaTitle} | ${siteSettings.studioName}`;
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BeautySalon',
+  name: siteSettings.studioName,
+  description: metaDescription,
+  url: Astro.site?.toString(),
+  telephone: siteSettings.telefon,
+  email: siteSettings.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: siteSettings.adresse.strasse,
+    postalCode: siteSettings.adresse.plz,
+    addressLocality: siteSettings.adresse.ort,
+    addressCountry: 'DE',
+  },
+  sameAs: (siteSettings.socialLinks || []).map((link) => link.url),
+};
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={metaDescription} />
+<link rel="canonical" href={canonicalUrl} />
+{noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={metaDescription} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:locale" content="de_DE" />
+<meta property="og:site_name" content={siteSettings.studioName} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={metaDescription} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+<script type="application/ld+json" set:html={safeJsonLd(localBusinessSchema)} />
+{structuredData.map((entry) => <script type="application/ld+json" set:html={safeJsonLd(entry)} />)}

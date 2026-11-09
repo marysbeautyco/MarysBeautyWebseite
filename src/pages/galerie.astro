@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { sanityFetch } from '../lib/sanity';
+import { galleryImagesQuery, galleryPageQuery, siteSettingsQuery } from '../lib/queries';
+import { galleryPageFallback, siteSettingsFallback } from '../lib/content';
+import { urlFor, getImageAlt } from '../lib/image';
+import type { GalleryImage, GalleryPage, SiteSettings } from '../types/sanity';
+
+const siteSettings = (await sanityFetch<SiteSettings>(siteSettingsQuery)) ?? siteSettingsFallback;
+const galleryPage = (await sanityFetch<GalleryPage>(galleryPageQuery)) ?? galleryPageFallback;
+const bilder = (await sanityFetch<GalleryImage[]>(galleryImagesQuery)) ?? [];
+---
+
+<BaseLayout
+  title={galleryPage.titel}
+  description={`Bildergalerie von ${siteSettings.studioName} – Einblicke in Studio und Behandlungen.`}
+  seo={galleryPage.seo}
+>
+  <section class="section">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h1 class="section-title">{galleryPage.titel}</h1>
+        <hr class="divider mx-auto" />
+        {galleryPage.einleitung && <p class="section-lead mx-auto">{galleryPage.einleitung}</p>}
+      </div>
+
+      {bilder.length > 0 ? (
+        <div class="row g-3" id="galerie-grid">
+          {bilder.map((eintrag, index) => {
+            const url = urlFor(eintrag.bild, 900);
+            const altText = getImageAlt(eintrag.bild, eintrag.titel || 'Impression aus dem Studio');
+            return url ? (
+              <div class="col-6 col-md-4">
+                <button
+                  type="button"
+                  class="gallery-card rounded-3 border-0 p-0 w-100 fade-in-up"
+                  style="aspect-ratio: 1; cursor: zoom-in;"
+                  data-lightbox-trigger
+                  data-index={index}
+                  aria-label={`Bild vergrößern: ${altText}`}
+                >
+                  <img src={url} alt={altText} loading="lazy" width="900" height="900" />
+                </button>
+              </div>
+            ) : null;
+          })}
+        </div>
+      ) : (
+        <p class="text-center opacity-75">
+          Die Galerie wird in Kürze mit Bildern gefüllt. Sobald in Sanity Galeriebilder gepflegt werden, erscheinen
+          sie automatisch an dieser Stelle.
+        </p>
+      )}
+    </div>
+  </section>
+
+  <div
+    id="lightbox"
+    class="d-none position-fixed top-0 start-0 w-100 h-100"
+    style="background: rgba(0,0,0,0.85); z-index: 1050;"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Bild-Vorschau"
+  >
+    <button
+      type="button"
+      id="lightbox-close"
+      class="btn btn-light position-absolute top-0 end-0 m-3"
+      aria-label="Vorschau schließen"
+    >
+      Schließen ✕
+    </button>
+    <div class="d-flex align-items-center justify-content-center h-100 p-4">
+      <img id="lightbox-image" src="" alt="" class="img-fluid rounded-3" style="max-height: 85vh;" />
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // Sehr schlanke, abhängigkeitsfreie Lightbox: vergrößert das angeklickte
+  // Galeriebild. Kein zusätzliches JS-Framework oder Drittanbieter-Skript nötig.
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImage = document.getElementById('lightbox-image') as HTMLImageElement | null;
+  const schliessenButton = document.getElementById('lightbox-close');
+
+  function oeffnen(src: string, alt: string) {
+    if (!lightbox || !lightboxImage) return;
+    lightboxImage.src = src;
+    lightboxImage.alt = alt;
+    lightbox.classList.remove('d-none');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function schliessen() {
+    if (!lightbox) return;
+    lightbox.classList.add('d-none');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-lightbox-trigger]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const img = button.querySelector('img');
+      if (img) oeffnen(img.src, img.alt);
+    });
+  });
+
+  schliessenButton?.addEventListener('click', schliessen);
+  lightbox?.addEventListener('click', (event) => {
+    if (event.target === lightbox) schliessen();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') schliessen();
+  });
+</script>

@@ -1,0 +1,22 @@
+---
+interface Props {
+  url: string;
+  label?: string;
+  variant?: 'primary' | 'outline-light' | 'outline-dark';
+  size?: 'sm' | 'lg';
+  class?: string;
+}
+
+const { url, label = 'Jetzt Termin buchen', variant = 'primary', size, class: className = '' } = Astro.props;
+const sizeClass = size ? `btn-${size}` : '';
+---
+
+<a
+  href={url}
+  class:list={['btn', `btn-${variant}`, sizeClass, className]}
+  target="_blank"
+  rel="noopener noreferrer"
+  data-planity-booking
+>
+  {label}
+</a>

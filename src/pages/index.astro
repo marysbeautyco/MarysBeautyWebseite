@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookingButton from '../components/BookingButton.astro';
+import TreatmentCard from '../components/TreatmentCard.astro';
+import { sanityFetch } from '../lib/sanity';
+import { homePageQuery, siteSettingsQuery, treatmentsQuery } from '../lib/queries';
+import { homePageFallback, siteSettingsFallback, treatmentsFallback } from '../lib/content';
+import { urlFor, getImageAlt } from '../lib/image';
+import type { HomePage, SiteSettings, Treatment } from '../types/sanity';
+
+const siteSettings = (await sanityFetch<SiteSettings>(siteSettingsQuery)) ?? siteSettingsFallback;
+const homePage = (await sanityFetch<HomePage>(homePageQuery)) ?? homePageFallback;
+const alleTreatments = (await sanityFetch<Treatment[]>(treatmentsQuery)) ?? treatmentsFallback;
+const topTreatments = alleTreatments.slice(0, 6);
+
+const heroBildUrl = urlFor(homePage.heroBild, 1920);
+const galerieBilder = (homePage.galerieVorschau ?? []).slice(0, 4);
+---
+
+<BaseLayout
+  title="Startseite"
+  description={`${siteSettings.studioName} – ${siteSettings.claim ?? 'Ihr Kosmetikstudio für individuelle Pflege und Wohlbefinden.'}`}
+  seo={homePage.seo}
+>
+  <section class="hero">
+    {heroBildUrl ? (
+      <img src={heroBildUrl} alt="" class="hero__bg" loading="eager" />
+    ) : (
+      <div class="hero__bg bg-dark"></div>
+    )}
+    <div class="hero__overlay"></div>
+    <div class="container hero__content py-5">
+      <div class="row">
+        <div class="col-lg-8">
+          <h1 class="display-5 mb-3 text-white" style="font-family: 'Playfair Display', serif;">
+            {homePage.heroUeberschrift}
+          </h1>
+          <p class="fs-5 mb-4" style="max-width: 36rem;">{homePage.heroText}</p>
+          <BookingButton url={siteSettings.planityUrl} label={homePage.heroButtonText || 'Jetzt Termin buchen'} size="lg" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="row justify-content-center text-center">
+        <div class="col-lg-8">
+          {homePage.kurzvorstellungTitel && <h2 class="section-title">{homePage.kurzvorstellungTitel}</h2>}
+          <hr class="divider mx-auto" />
+          {homePage.kurzvorstellungText && <p class="section-lead mx-auto">{homePage.kurzvorstellungText}</p>}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {homePage.vorteile && homePage.vorteile.length > 0 && (
+    <section class="section bg-champagne-soft">
+      <div class="container">
+        <div class="row g-4">
+          {homePage.vorteile.map((vorteil) => (
+            <div class="col-md-6 col-lg-3">
+              <div class="h-100 text-center fade-in-up">
+                <h3 class="h5">{vorteil.titel}</h3>
+                <p class="opacity-75 mb-0">{vorteil.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="section">
+    <div class="container">
+      <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+        <div>
+          <h2 class="section-title mb-1">Unsere Behandlungen</h2>
+          <hr class="divider" />
+        </div>
+        <a href="/behandlungen" class="btn btn-outline-dark">Alle Behandlungen ansehen</a>
+      </div>
+      <div class="row g-4">
+        {topTreatments.map((treatment) => (
+          <div class="col-md-6 col-lg-4">
+            <TreatmentCard treatment={treatment} planityUrl={siteSettings.planityUrl} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {galerieBilder.length > 0 && (
+    <section class="section bg-sand">
+      <div class="container">
+        <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+          <div>
+            <h2 class="section-title mb-1">Impressionen</h2>
+            <hr class="divider" />
+          </div>
+          <a href="/galerie" class="btn btn-outline-dark">Zur Galerie</a>
+        </div>
+        <div class="row g-3">
+          {galerieBilder.map((bild) => {
+            const url = urlFor(bild, 640);
+            return url ? (
+              <div class="col-6 col-lg-3">
+                <div class="gallery-card rounded-3" style="aspect-ratio: 1; height:100%;">
+                  <img src={url} alt={getImageAlt(bild, 'Impression aus dem Studio')} loading="lazy" width="640" height="640" />
+                </div>
+              </div>
+            ) : null;
+          })}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="section">
+    <div class="container">
+      <div class="row justify-content-center text-center">
+        <div class="col-lg-7">
+          <h2 class="section-title">Wir freuen uns auf Sie</h2>
+          <hr class="divider mx-auto" />
+          <p class="section-lead mx-auto mb-4">
+            Buchen Sie Ihren Termin bequem online über Planity oder kontaktieren Sie uns direkt.
+          </p>
+          <div class="d-flex flex-wrap justify-content-center gap-3">
+            <BookingButton url={siteSettings.planityUrl} size="lg" />
+            <a href="/kontakt" class="btn btn-outline-dark btn-lg">Kontakt &amp; Anfahrt</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
