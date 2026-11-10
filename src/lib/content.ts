@@ -118,6 +118,7 @@ export const treatmentsFallback: Treatment[] = [
   },
   {
     _id: 'behandlung-diamant-mikrodermabrasion',
+    bild: lokalesBild('diamant-mikrodermabrasion', 'Diamant-Mikrodermabrasion im Gesicht'),
     titel: 'Diamant-Mikrodermabrasion',
     slug: { current: 'diamant-mikrodermabrasion' },
     kategorie: treatmentCategoriesFallback[0],
@@ -137,6 +138,7 @@ export const treatmentsFallback: Treatment[] = [
   },
   {
     _id: 'behandlung-mesotherapie',
+    bild: lokalesBild('mesotherapie', 'Ampullen mit Wirkstoffkomplex für die Mesotherapie'),
     titel: 'Mesotherapie',
     slug: { current: 'mesotherapie' },
     kategorie: treatmentCategoriesFallback[0],
@@ -155,6 +157,7 @@ export const treatmentsFallback: Treatment[] = [
   },
   {
     _id: 'behandlung-brow-lifting',
+    bild: lokalesBild('brow-lifting', 'Ergebnis nach dem Brow Lifting'),
     titel: 'Brow Lifting',
     slug: { current: 'brow-lifting' },
     kategorie: treatmentCategoriesFallback[1],
@@ -164,6 +167,7 @@ export const treatmentsFallback: Treatment[] = [
   },
   {
     _id: 'behandlung-augenbrauenkorrektur',
+    bild: lokalesBild('augenbrauenkorrektur', 'Werkzeuge für die Augenbrauenkorrektur'),
     titel: 'Augenbrauenkorrektur',
     slug: { current: 'augenbrauenkorrektur' },
     kategorie: treatmentCategoriesFallback[1],
@@ -173,6 +177,7 @@ export const treatmentsFallback: Treatment[] = [
   },
   {
     _id: 'behandlung-pmu-combibrows',
+    bild: lokalesBild('combibrows', 'Combibrows-Behandlung an der Augenbraue'),
     titel: 'Permanent Make-up: Combibrows',
     slug: { current: 'permanent-make-up-combibrows' },
     kategorie: treatmentCategoriesFallback[1],
@@ -237,6 +242,11 @@ export const galleryImagesFallback: GalleryImage[] = [
   ['laserhaarentfernung', 'Laserhaarentfernung'],
   ['hydrafacial', 'Hydrafacial'],
   ['lip-blushing', 'Lip Blushing'],
+  ['diamant-mikrodermabrasion', 'Diamant-Mikrodermabrasion'],
+  ['mesotherapie', 'Mesotherapie'],
+  ['brow-lifting', 'Brow Lifting'],
+  ['augenbrauenkorrektur', 'Augenbrauenkorrektur'],
+  ['combibrows', 'Permanent Make-up: Combibrows'],
 ].map(([name, titel], index) => ({
   _id: `galerie-${name}`,
   bild: lokalesBild(name, `${titel} bei Marys Beauty`),
