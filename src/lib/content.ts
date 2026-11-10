@@ -31,8 +31,11 @@ export const siteSettingsFallback: SiteSettings = {
   },
   telefon: '0171 1009917',
   email: 'marysbeautyco7@gmail.com',
-  // Feste Öffnungszeiten liegen noch nicht vor.
-  oeffnungszeiten: [{ tag: 'Termine', zeiten: 'nach Vereinbarung' }],
+  oeffnungszeiten: [
+    { tag: 'Mo – Fr', zeiten: '09:00 – 18:00 Uhr' },
+    { tag: 'Sa', zeiten: '09:00 – 16:00 Uhr' },
+    { tag: 'So', zeiten: 'geschlossen' },
+  ],
   // Instagram-Handle @marysbeauty.co stammt aus der gelieferten Preisliste.
   socialLinks: [{ plattform: 'instagram', url: 'https://www.instagram.com/marysbeauty.co/' }],
   kartenlink: 'https://www.google.com/maps/search/?api=1&query=Kirchstra%C3%9Fe+11%2C+48282+Emsdetten',

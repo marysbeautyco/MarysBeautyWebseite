@@ -2,7 +2,8 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-const siteUrl = process.env.PUBLIC_SITE_URL || 'https://www.beispiel-kosmetikstudio.de';
+// Basis für Sitemap, robots.txt, Canonical-Links und Open-Graph-Tags.
+const siteUrl = 'https://marysbeauty.co';
 
 // https://astro.build/config
 export default defineConfig({

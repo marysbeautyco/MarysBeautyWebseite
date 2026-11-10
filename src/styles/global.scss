@@ -691,12 +691,12 @@ button.gallery-card {
 
   > div {
     display: grid;
-    grid-template-columns: 8rem minmax(0, 1fr);
+    grid-template-columns: 10rem minmax(0, 1fr);
     gap: 1rem;
     padding-block: 1.15rem;
     border-bottom: 1px solid $sand;
 
-    @media (max-width: 400px) {
+    @media (max-width: 575.98px) {
       grid-template-columns: minmax(0, 1fr);
       gap: 0.15rem;
     }

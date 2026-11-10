@@ -73,7 +73,7 @@ npm install
 cp .env.example .env
 ```
 
-Trage in der neuen `.env` zumindest `PUBLIC_SITE_URL` ein (bzw. lasse die Platzhalter, solange noch kein Sanity-Projekt existiert – die Seite zeigt dann automatisch realistische Platzhalterinhalte, siehe `src/lib/content.ts`).
+Die Platzhalter können bleiben, solange noch kein Sanity-Projekt existiert. Die Seite zeigt dann automatisch die Startinhalte aus `src/lib/content.ts`.
 
 ```bash
 npm run dev
@@ -180,7 +180,7 @@ Das Studio (`studio/`) kann entweder im selben Repository verbleiben (einfachste
    - **Build command:** `npm run build`
    - **Build output directory:** `dist`
    - **Root directory:** `/` (Hauptverzeichnis – **nicht** `studio/`, das ist ein separates Projekt)
-4. Unter **Environment variables** die Variablen aus `.env.example` eintragen (mindestens `SANITY_PROJECT_ID`, `SANITY_DATASET`, `SANITY_API_VERSION`, `PUBLIC_SITE_URL`, `PUBLIC_PLANITY_URL`). `SANITY_API_READ_TOKEN` nur setzen, falls das Dataset privat ist.
+4. Unter **Environment variables** die Variablen aus `.env.example` eintragen (mindestens `SANITY_PROJECT_ID`, `SANITY_DATASET`, `SANITY_API_VERSION`, `PUBLIC_PLANITY_URL`). `SANITY_API_READ_TOKEN` nur setzen, falls das Dataset privat ist.
 5. **Production branch:** `main`.
 6. **Deploy speichern** – Cloudflare baut die Seite jetzt bei jedem Push auf `main` automatisch neu.
 
@@ -191,7 +191,7 @@ Cloudflare Pages erstellt automatisch auch **Preview-Deployments** für Pull Req
 1. Im Cloudflare-Pages-Projekt → **Custom domains** → **Set up a custom domain**.
 2. Domain eingeben (z. B. `www.marysbeauty.de`). Liegt die Domain bereits bei Cloudflare (empfohlen), wird der DNS-Eintrag automatisch gesetzt. Liegt sie bei einem anderen Anbieter, zeigt Cloudflare die nötigen CNAME-/A-Einträge an.
 3. HTTPS wird von Cloudflare Pages automatisch per kostenlosem SSL-Zertifikat eingerichtet (Universal SSL) – keine manuelle Konfiguration nötig.
-4. Nach dem Verbinden der Domain: `PUBLIC_SITE_URL` in den Cloudflare-Umgebungsvariablen auf die finale Domain anpassen und einen neuen Deploy anstoßen (z. B. per leerem Commit oder über „Retry deployment"), damit Sitemap, Canonical-URLs und Open-Graph-Tags die richtige Domain verwenden.
+4. Die Domain für Sitemap, Canonical-URLs und Open-Graph-Tags steht fest in `astro.config.mjs` (`siteUrl`). Bei einem Domainwechsel dort anpassen und neu deployen.
 
 ## 10. Automatisches Deployment bei Sanity-Änderungen
 
@@ -256,7 +256,7 @@ Die Seite funktioniert in jedem Fall vollständig, auch ganz ohne White-Label-Mo
 
 ## 12. Sitemap & Google Search Console
 
-Die Sitemap wird bei jedem Build automatisch erzeugt und ist unter `https://ihre-domain.de/sitemap.xml` erreichbar (`src/pages/sitemap.xml.ts`, die Seitenliste selbst kommt von `@astrojs/sitemap`). Die `robots.txt` (`src/pages/robots.txt.ts`) verweist automatisch darauf. **Wichtig:** Die Domain stammt aus der Build-Variable `PUBLIC_SITE_URL`. Ohne sie enthält die Sitemap die Beispiel-Domain und Google lehnt sie ab.
+Die Sitemap wird bei jedem Build automatisch erzeugt und ist unter `https://ihre-domain.de/sitemap.xml` erreichbar, aktuell `https://marysbeauty.co/sitemap.xml` (`src/pages/sitemap.xml.ts`, die Seitenliste selbst kommt von `@astrojs/sitemap`). Die `robots.txt` (`src/pages/robots.txt.ts`) verweist automatisch darauf. Die Domain stammt aus `siteUrl` in `astro.config.mjs`.
 
 1. [Google Search Console](https://search.google.com/search-console) öffnen → **Property hinzufügen** → Domain eingeben.
 2. Domainverifizierung: Da die Domain über Cloudflare läuft, am einfachsten per **DNS-TXT-Eintrag** (Google zeigt den nötigen Eintrag an, Cloudflare → DNS → Eintrag hinzufügen) oder alternativ per HTML-Meta-Tag (in `src/layouts/BaseLayout.astro` im `<head>` ergänzen).
@@ -318,7 +318,7 @@ Für das `studio/`-Projekt gilt entsprechend `npx tsc --noEmit` bzw. `npx sanity
 - [ ] Logo prüfen (`public/brand/`, wird beim Seed-Import auch in Sanity angelegt)
 - [ ] Impressum und Datenschutzerklärung durch rechtlich geprüfte Fassungen ersetzt (aktuell bewusst nur Platzhalter-Musterstrukturen!)
 - [ ] GitHub-Repository erstellt und Code gepusht
-- [ ] Cloudflare Pages verbunden, Build erfolgreich, `PUBLIC_SITE_URL` korrekt gesetzt
+- [ ] Cloudflare Pages verbunden, Build erfolgreich, `siteUrl` in `astro.config.mjs` korrekt
 - [ ] Eigene Domain verbunden, HTTPS aktiv
 - [ ] Sanity-Webhook → Cloudflare-Deploy-Hook eingerichtet und getestet (eine Teständerung in Sanity veröffentlichen und prüfen, ob die Webseite sich automatisch aktualisiert)
 - [ ] Sitemap bei Google Search Console eingereicht
