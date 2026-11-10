@@ -246,33 +246,20 @@ export const galleryImagesFallback: GalleryImage[] = [
 
 const impressumPlatzhalter = `## Angaben gemäß § 5 TMG
 
-**[PLATZHALTER – bitte durch echte Angaben ersetzen]**
-
 Marys Beauty
 Kirchstraße 11
 48282 Emsdetten
 
-Vertreten durch: Mary [Nachname PLATZHALTER]
+Vertreten durch: Mary Ibrahim
 
 **Kontakt**
 Telefon: 0171 1009917
 E-Mail: marysbeautyco7@gmail.com
 
-**Umsatzsteuer-ID**
-[PLATZHALTER – USt-IdNr. gemäß §27a Umsatzsteuergesetz]
-
 **Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV**
-Mary [Nachname PLATZHALTER], Kirchstraße 11, 48282 Emsdetten
+Mary Ibrahim, Kirchstraße 11, 48282 Emsdetten`;
 
----
-
-Dies ist eine unverbindliche Musterstruktur und ersetzt keine rechtliche Prüfung.
-Bitte durch eine rechtssichere Fassung (z. B. über einen Impressum-Generator oder
-eine Rechtsberatung) ersetzen lassen.`;
-
-const datenschutzPlatzhalter = `**[PLATZHALTER – bitte durch eine rechtlich geprüfte Fassung ersetzen]**
-
-Diese Webseite nutzt Cloudflare Pages zum Hosting, Sanity als Content-Management-System
+const datenschutzPlatzhalter = `Diese Webseite nutzt Cloudflare Pages zum Hosting, Sanity als Content-Management-System
 sowie ggf. Planity als externen Buchungsdienst. Beim Besuch dieser Seiten können
 technisch notwendige Daten (z. B. IP-Adresse, Zugriffszeit) verarbeitet werden.
 
@@ -290,12 +277,7 @@ von Planity.
 
 **Ihre Rechte**
 Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung,
-Datenübertragbarkeit und Widerspruch gemäß Art. 15–21 DSGVO.
-
----
-
-Dies ist eine unverbindliche Musterstruktur und ersetzt keine rechtliche Prüfung.
-Bitte durch eine individuell geprüfte, rechtssichere Datenschutzerklärung ersetzen lassen.`;
+Datenübertragbarkeit und Widerspruch gemäß Art. 15–21 DSGVO.`;
 
 export const legalPagesFallback: Record<string, LegalPage> = {
   impressum: {
