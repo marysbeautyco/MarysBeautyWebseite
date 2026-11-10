@@ -13,6 +13,9 @@ const builder =
  * auf ein Platzhalterbild zurückfallen können.
  */
 export function urlFor(image: SanityImage | undefined | null, width = 1600) {
+  if (image?.asset?._id === 'lokal') {
+    return width <= 640 ? image.asset.url.replace(/\.webp$/, '-640.webp') : image.asset.url;
+  }
   if (!builder || !image?.asset) return null;
   return builder.image(image).width(width).fit('max').auto('format').url();
 }

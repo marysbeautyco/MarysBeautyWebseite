@@ -55,6 +55,7 @@ export interface TreatmentCategory {
   titel: string;
   slug: { current: string };
   beschreibung?: string;
+  bild?: SanityImage;
   reihenfolge?: number;
 }
 

@@ -16,7 +16,7 @@ const isExternal = /^https?:/.test(buchungsHref);
 ---
 
 <article class="treatment-row fade-in-up">
-  {bildUrl && (
+  {bildUrl ? (
     <img
       class="treatment-row__image"
       src={bildUrl}
@@ -25,6 +25,10 @@ const isExternal = /^https?:/.test(buchungsHref);
       width="160"
       height="200"
     />
+  ) : (
+    <div class="treatment-row__image treatment-row__placeholder" aria-hidden="true">
+      <img src="/brand/marys-beauty-monogramm-creme.png" alt="" loading="lazy" width="2881" height="1216" />
+    </div>
   )}
   <div class="treatment-row__body">
     <h3>{treatment.titel}</h3>

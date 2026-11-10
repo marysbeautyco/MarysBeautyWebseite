@@ -6,13 +6,20 @@
 import type {
   AboutPage,
   ContactPage,
+  GalleryImage,
   GalleryPage,
   HomePage,
   LegalPage,
   SiteSettings,
+  SanityImage,
   Treatment,
   TreatmentCategory,
 } from '../types/sanity';
+
+/** Foto aus public/images/behandlungen, bis in Sanity ein eigenes Bild gepflegt ist. */
+function lokalesBild(name: string, alt: string): SanityImage {
+  return { asset: { _id: 'lokal', url: `/images/behandlungen/${name}.webp` }, alt };
+}
 
 export const siteSettingsFallback: SiteSettings = {
   studioName: 'Marys Beauty',
@@ -32,6 +39,7 @@ export const siteSettingsFallback: SiteSettings = {
 };
 
 export const homePageFallback: HomePage = {
+  heroBild: lokalesBild('lash-lifting', 'Lash Lifting an den Wimpern'),
   heroUeberschrift: 'Natürliche Schönheit, individuell gepflegt',
   heroText:
     'Moderne Behandlungsmethoden, hochwertige Pflegeprodukte und individuell abgestimmte Anwendungen für ein gepflegtes und strahlendes Erscheinungsbild.',
@@ -50,6 +58,7 @@ export const homePageFallback: HomePage = {
 export const treatmentCategoriesFallback: TreatmentCategory[] = [
   {
     _id: 'cat-facials',
+    bild: lokalesBild('gesichtsbehandlung', 'Sanfte Massage von Hals und Dekolleté'),
     titel: 'Facials',
     slug: { current: 'facials' },
     beschreibung: 'Reinigung, Pflege und moderne Technologie für ein frisches, strahlendes Hautbild.',
@@ -57,6 +66,7 @@ export const treatmentCategoriesFallback: TreatmentCategory[] = [
   },
   {
     _id: 'cat-specials',
+    bild: lokalesBild('lip-blushing', 'Pigmentierung der Lippen beim Lip Blushing'),
     titel: 'Specials',
     slug: { current: 'specials' },
     beschreibung: 'Wimpern, Brauen und Permanent Make-up, dezent betont und natürlich im Ausdruck.',
@@ -64,6 +74,7 @@ export const treatmentCategoriesFallback: TreatmentCategory[] = [
   },
   {
     _id: 'cat-laser',
+    bild: lokalesBild('laserhaarentfernung', 'Glatte Beine nach der Laserhaarentfernung'),
     titel: 'Laserhaarentfernung',
     slug: { current: 'laserhaarentfernung' },
     beschreibung: 'Dauerhaft glatte Haut für Gesicht und Körper, abgestimmt in einer persönlichen Beratung.',
@@ -74,6 +85,7 @@ export const treatmentCategoriesFallback: TreatmentCategory[] = [
 export const treatmentsFallback: Treatment[] = [
   {
     _id: 'behandlung-klassische-gesichtsbehandlung',
+    bild: lokalesBild('gesichtsbehandlung', 'Sanfte Massage von Hals und Dekolleté'),
     titel: 'Klassische Gesichtsbehandlung',
     slug: { current: 'klassische-gesichtsbehandlung' },
     kategorie: treatmentCategoriesFallback[0],
@@ -83,6 +95,7 @@ export const treatmentsFallback: Treatment[] = [
   },
   {
     _id: 'behandlung-tiefenreinigung',
+    bild: lokalesBild('tiefenreinigung', 'Tiefenreinigung der Gesichtshaut mit Reinigungsschaum'),
     titel: 'Tiefenreinigung',
     slug: { current: 'tiefenreinigung' },
     kategorie: treatmentCategoriesFallback[0],
@@ -92,6 +105,7 @@ export const treatmentsFallback: Treatment[] = [
   },
   {
     _id: 'behandlung-hydrafacial',
+    bild: lokalesBild('hydrafacial', 'Hydrafacial-Behandlung im Gesicht'),
     titel: 'Hydrafacial',
     slug: { current: 'hydrafacial' },
     kategorie: treatmentCategoriesFallback[0],
@@ -110,6 +124,7 @@ export const treatmentsFallback: Treatment[] = [
   },
   {
     _id: 'behandlung-microneedling-deluxe',
+    bild: lokalesBild('microneedling', 'Microneedling-Stift auf der Stirn'),
     titel: 'Microneedling Deluxe',
     slug: { current: 'microneedling-deluxe' },
     kategorie: treatmentCategoriesFallback[0],
@@ -127,6 +142,7 @@ export const treatmentsFallback: Treatment[] = [
   },
   {
     _id: 'behandlung-lash-lifting',
+    bild: lokalesBild('lash-lifting', 'Lash Lifting an den Wimpern'),
     titel: 'Lash Lifting',
     slug: { current: 'lash-lifting' },
     kategorie: treatmentCategoriesFallback[1],
@@ -163,6 +179,7 @@ export const treatmentsFallback: Treatment[] = [
   },
   {
     _id: 'behandlung-pmu-lip-blushing',
+    bild: lokalesBild('lip-blushing', 'Pigmentierung der Lippen beim Lip Blushing'),
     titel: 'Permanent Make-up: Lip Blushing',
     slug: { current: 'permanent-make-up-lip-blushing' },
     kategorie: treatmentCategoriesFallback[1],
@@ -172,6 +189,7 @@ export const treatmentsFallback: Treatment[] = [
   },
   {
     _id: 'behandlung-laserhaarentfernung',
+    bild: lokalesBild('laserhaarentfernung', 'Glatte Beine nach der Laserhaarentfernung'),
     titel: 'Laserhaarentfernung',
     slug: { current: 'laserhaarentfernung' },
     kategorie: treatmentCategoriesFallback[2],
@@ -182,6 +200,7 @@ export const treatmentsFallback: Treatment[] = [
 ];
 
 export const aboutPageFallback: AboutPage = {
+  bild: lokalesBild('microneedling', 'Microneedling-Stift auf der Stirn'),
   titel: 'Über uns',
   philosophieTitel: 'Unsere Philosophie',
   philosophieText:
@@ -207,6 +226,20 @@ export const contactPageFallback: ContactPage = {
   titel: 'Kontakt',
   einleitung: 'Wir freuen uns auf Ihre Nachricht oder Ihren Anruf.',
 };
+
+export const galleryImagesFallback: GalleryImage[] = [
+  ['lash-lifting', 'Lash Lifting'],
+  ['gesichtsbehandlung', 'Gesichtsbehandlung'],
+  ['microneedling', 'Microneedling'],
+  ['laserhaarentfernung', 'Laserhaarentfernung'],
+  ['hydrafacial', 'Hydrafacial'],
+  ['lip-blushing', 'Lip Blushing'],
+].map(([name, titel], index) => ({
+  _id: `galerie-${name}`,
+  bild: lokalesBild(name, `${titel} bei Marys Beauty`),
+  titel,
+  reihenfolge: index + 1,
+}));
 
 const impressumPlatzhalter = `## Angaben gemäß § 5 TMG
 

@@ -65,17 +65,23 @@ const standort = `Kosmetikstudio in ${siteSettings.adresse.ort}`;
   {gruppen.length > 0 && (
     <section class="section pt-0">
       <div class="container">
-        <span class="eyebrow">Unsere Behandlungen</span>
-        <div class="category-list mt-4">
-          {gruppen.map(({ kategorie, treatments: eintraege }) => (
-            <a class="category-row fade-in-up" href={`/behandlungen#${kategorie.slug.current}`}>
-              <h3 class="category-row__title">{kategorie.titel}</h3>
-              <div class="category-row__body">
-                {kategorie.beschreibung && <p class="category-row__text">{kategorie.beschreibung}</p>}
-                {eintraege.length > 1 && <p class="category-row__names">{eintraege.map((t) => t.titel).join(' · ')}</p>}
-              </div>
-              <Icon name="arrow" size={22} />
-            </a>
+        <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-5">
+          <div>
+            <span class="eyebrow">Leistungen</span>
+            <h2 class="section-title mb-0">Unsere Behandlungen</h2>
+          </div>
+          <a href="/behandlungen" class="link-arrow">Alle ansehen <Icon name="arrow" size={15} /></a>
+        </div>
+        <div class="row g-5 g-lg-4">
+          {gruppen.map(({ kategorie }) => (
+            <div class="col-md-4">
+              <a class="category-card fade-in-up" href={`/behandlungen#${kategorie.slug.current}`}>
+                <ArchVisual src={urlFor(kategorie.bild, 900)} alt={getImageAlt(kategorie.bild, kategorie.titel)} />
+                <h3>{kategorie.titel}</h3>
+                {kategorie.beschreibung && <p>{kategorie.beschreibung}</p>}
+                <span class="link-arrow">Entdecken <Icon name="arrow" size={15} /></span>
+              </a>
+            </div>
           ))}
         </div>
       </div>

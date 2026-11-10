@@ -2,14 +2,14 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { galleryImagesQuery, galleryPageQuery } from '../lib/queries';
-import { galleryPageFallback } from '../lib/content';
+import { galleryImagesFallback, galleryPageFallback } from '../lib/content';
 import { getContent, getSiteSettings } from '../lib/site';
 import { urlFor, getImageAlt } from '../lib/image';
 import type { GalleryImage, GalleryPage } from '../types/sanity';
 
 const siteSettings = await getSiteSettings();
 const galleryPage = await getContent<GalleryPage>(galleryPageQuery, galleryPageFallback);
-const bilder = await getContent<GalleryImage[]>(galleryImagesQuery, []);
+const bilder = await getContent<GalleryImage[]>(galleryImagesQuery, galleryImagesFallback);
 const instagram = siteSettings.socialLinks?.find((link) => link.plattform === 'instagram');
 ---
 
@@ -22,30 +22,22 @@ const instagram = siteSettings.socialLinks?.find((link) => link.plattform === 'i
 
   <section class="section">
     <div class="container">
-      {bilder.length > 0 ? (
-        <div class="row g-3">
-          {bilder.map((eintrag) => {
-            const url = urlFor(eintrag.bild, 900);
-            const altText = getImageAlt(eintrag.bild, eintrag.titel || 'Impression aus dem Studio');
-            return url ? (
-              <div class="col-6 col-md-4">
-                <button type="button" class="gallery-card fade-in-up" data-lightbox-trigger aria-label={`Bild vergrößern: ${altText}`}>
-                  <img src={url} alt={altText} loading="lazy" width="900" height="1125" />
-                </button>
-              </div>
-            ) : null;
-          })}
-        </div>
-      ) : (
-        <div class="empty-state">
-          <img class="empty-state__mark" src="/brand/marys-beauty-monogramm-sand.png" alt="" width="2881" height="1216" />
-          <h2 class="section-title">Neue Einblicke folgen in Kürze</h2>
-          {instagram && (
-            <>
-              <p class="section-lead mx-auto mb-4">Aktuelle Ergebnisse und Eindrücke aus dem Studio finden Sie schon jetzt auf Instagram.</p>
-              <a class="btn btn-outline-dark" href={instagram.url} target="_blank" rel="noopener noreferrer">Zu Instagram</a>
-            </>
-          )}
+      <div class="row g-3">
+        {bilder.map((eintrag) => {
+          const url = urlFor(eintrag.bild, 900);
+          const altText = getImageAlt(eintrag.bild, eintrag.titel || 'Impression aus dem Studio');
+          return url ? (
+            <div class="col-6 col-md-4">
+              <button type="button" class="gallery-card fade-in-up" data-lightbox-trigger aria-label={`Bild vergrößern: ${altText}`}>
+                <img src={url} alt={altText} loading="lazy" width="900" height="1125" />
+              </button>
+            </div>
+          ) : null;
+        })}
+      </div>
+      {instagram && (
+        <div class="text-center mt-5">
+          <a class="btn btn-outline-dark" href={instagram.url} target="_blank" rel="noopener noreferrer">Mehr auf Instagram</a>
         </div>
       )}
     </div>

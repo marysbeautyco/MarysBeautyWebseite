@@ -4,11 +4,12 @@
 //   cd studio && npx sanity dataset import seed/initial-content.ndjson production --missing
 import { copyFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { randomBytes } from 'node:crypto';
-import { dirname, join } from 'node:path';
+import { basename, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   aboutPageFallback,
   contactPageFallback,
+  galleryImagesFallback,
   galleryPageFallback,
   homePageFallback,
   legalPagesFallback,
@@ -40,6 +41,21 @@ function toBlocks(text: string) {
       });
       return { _type: 'block', _key: key(), style: heading ? 'h2' : 'normal', markDefs: [], children };
     });
+}
+
+const lokaleBilder = new Set<string>();
+
+/** Ersetzt lokale Fotos durch Sanity-Asset-Verweise und merkt sie zum Kopieren vor. */
+function mitAssets(wert: unknown): unknown {
+  if (Array.isArray(wert)) return wert.map(mitAssets);
+  if (!wert || typeof wert !== 'object') return wert;
+  const objekt = wert as Record<string, unknown>;
+  const asset = objekt.asset as { _id?: string; url?: string } | undefined;
+  if (asset?._id === 'lokal' && asset.url) {
+    lokaleBilder.add(asset.url);
+    return { _type: 'image', _sanityAsset: `image@file://./assets/${basename(asset.url)}`, alt: objekt.alt };
+  }
+  return Object.fromEntries(Object.entries(objekt).map(([k, v]) => [k, mitAssets(v)]));
 }
 
 const settings = siteSettingsFallback;
@@ -81,11 +97,13 @@ const documents: Record<string, unknown>[] = [
     _id: 'aboutPage',
     _type: 'aboutPage',
     titel: aboutPageFallback.titel,
+    bild: aboutPageFallback.bild,
     philosophieTitel: aboutPageFallback.philosophieTitel,
     philosophieText: toBlocks(String(aboutPageFallback.philosophieText)),
     team: teamMembers.map((m) => ({ _type: 'reference', _key: key(), _ref: m._id })),
   },
   { _id: 'galleryPage', _type: 'galleryPage', ...galleryPageFallback },
+  ...galleryImagesFallback.map((g) => ({ ...g, _type: 'galleryImage' })),
   { _id: 'contactPage', _type: 'contactPage', ...contactPageFallback },
   ...Object.entries(legalPagesFallback).map(([name, seite]) => ({
     _id: `legalPage-${name}`,
@@ -102,7 +120,12 @@ for (const t of treatmentsFallback) {
   }
 }
 
+const ausgabe = documents.map(mitAssets);
+
 mkdirSync(join(seedDir, 'assets'), { recursive: true });
+for (const url of lokaleBilder) {
+  copyFileSync(join(root, 'public', url), join(seedDir, 'assets', basename(url)));
+}
 copyFileSync(join(root, 'public', 'brand', logoName), join(seedDir, 'assets', logoName));
-writeFileSync(join(seedDir, 'initial-content.ndjson'), documents.map((d) => JSON.stringify(d)).join('\n') + '\n');
+writeFileSync(join(seedDir, 'initial-content.ndjson'), ausgabe.map((d) => JSON.stringify(d)).join('\n') + '\n');
 console.log(`${documents.length} Dokumente nach studio/seed/initial-content.ndjson geschrieben.`);

@@ -127,7 +127,7 @@ Das Studio ist dann unter `http://localhost:3333` erreichbar. Die Navigation ist
 
 „Singleton"-Seiten (z. B. Website-Einstellungen) lassen sich nicht duplizieren oder löschen – es gibt technisch immer nur genau ein Dokument.
 
-**Startinhalte importieren:** Damit das Studio nicht leer beginnt, liegt unter `studio/seed/` ein fertiger Datensatz mit Kontaktdaten, Logo, Behandlungen und Seitentexten. Einmalig nach dem Anlegen des Projekts ausführen:
+**Startinhalte importieren:** Damit das Studio nicht leer beginnt, liegt unter `studio/seed/` ein fertiger Datensatz mit Kontaktdaten, Logo, Fotos, Behandlungen und Seitentexten. Einmalig nach dem Anlegen des Projekts ausführen:
 
 ```bash
 cd studio
