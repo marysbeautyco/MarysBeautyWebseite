@@ -256,11 +256,11 @@ Die Seite funktioniert in jedem Fall vollständig, auch ganz ohne White-Label-Mo
 
 ## 12. Sitemap & Google Search Console
 
-Die `sitemap-index.xml` wird bei jedem Build automatisch durch `@astrojs/sitemap` erzeugt (Pfad: `https://ihre-domain.de/sitemap-index.xml`), ebenso die `robots.txt` (`src/pages/robots.txt.ts`), die automatisch auf die Sitemap verweist.
+Die Sitemap wird bei jedem Build automatisch erzeugt und ist unter `https://ihre-domain.de/sitemap.xml` erreichbar (`src/pages/sitemap.xml.ts`, die Seitenliste selbst kommt von `@astrojs/sitemap`). Die `robots.txt` (`src/pages/robots.txt.ts`) verweist automatisch darauf. **Wichtig:** Die Domain stammt aus der Build-Variable `PUBLIC_SITE_URL`. Ohne sie enthält die Sitemap die Beispiel-Domain und Google lehnt sie ab.
 
 1. [Google Search Console](https://search.google.com/search-console) öffnen → **Property hinzufügen** → Domain eingeben.
 2. Domainverifizierung: Da die Domain über Cloudflare läuft, am einfachsten per **DNS-TXT-Eintrag** (Google zeigt den nötigen Eintrag an, Cloudflare → DNS → Eintrag hinzufügen) oder alternativ per HTML-Meta-Tag (in `src/layouts/BaseLayout.astro` im `<head>` ergänzen).
-3. Nach erfolgreicher Verifizierung: **Sitemaps** → neue Sitemap einreichen: `sitemap-index.xml`.
+3. Nach erfolgreicher Verifizierung: **Sitemaps** → neue Sitemap einreichen: `sitemap.xml`.
 4. Google crawlt die Seite danach eigenständig; die Lokale SEO (Name, Adresse, Telefon als `schema.org/BeautySalon`-Daten) wird automatisch aus den Website-Einstellungen generiert (`src/components/Seo.astro`).
 
 ## 13. Zugänge sicher übergeben
