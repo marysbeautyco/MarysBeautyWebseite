@@ -256,7 +256,7 @@ Die Seite funktioniert in jedem Fall vollständig, auch ganz ohne White-Label-Mo
 
 ## 12. Sitemap & Google Search Console
 
-Die Sitemap wird bei jedem Build automatisch erzeugt und ist unter `https://ihre-domain.de/sitemap.xml` erreichbar, aktuell `https://marysbeauty.co/sitemap.xml` (`src/pages/sitemap.xml.ts`, die Seitenliste selbst kommt von `@astrojs/sitemap`). Die `robots.txt` (`src/pages/robots.txt.ts`) verweist automatisch darauf. Die Domain stammt aus `siteUrl` in `astro.config.mjs`.
+Die Sitemap wird bei jedem Build automatisch erzeugt und ist unter `https://ihre-domain.de/sitemap.xml` erreichbar, aktuell `https://marysbeautyco.de/sitemap.xml` (`src/pages/sitemap.xml.ts`, die Seitenliste selbst kommt von `@astrojs/sitemap`). Die `robots.txt` (`src/pages/robots.txt.ts`) verweist automatisch darauf. Die Domain stammt aus `siteUrl` in `astro.config.mjs`.
 
 1. [Google Search Console](https://search.google.com/search-console) öffnen → **Property hinzufügen** → Domain eingeben.
 2. Domainverifizierung: Da die Domain über Cloudflare läuft, am einfachsten per **DNS-TXT-Eintrag** (Google zeigt den nötigen Eintrag an, Cloudflare → DNS → Eintrag hinzufügen) oder alternativ per HTML-Meta-Tag (in `src/layouts/BaseLayout.astro` im `<head>` ergänzen).

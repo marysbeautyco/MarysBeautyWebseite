@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // Basis für Sitemap, robots.txt, Canonical-Links und Open-Graph-Tags.
-const siteUrl = 'https://marysbeauty.co';
+const siteUrl = 'https://marysbeautyco.de';
 
 // https://astro.build/config
 export default defineConfig({
