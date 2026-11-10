@@ -8,7 +8,7 @@ interface Props {
 }
 
 const { siteSettings } = Astro.props;
-const logoUrl = urlFor(siteSettings.logo, 240);
+const logoUrl = urlFor(siteSettings.logo, 320) ?? '/brand/marys-beauty-logo-espresso-480.png';
 const currentPath = Astro.url.pathname;
 
 const navLinks = [
@@ -25,41 +25,34 @@ function isActive(href: string) {
 }
 ---
 
-<header class="border-bottom" style="border-color: var(--bs-border-color);">
-  <nav class="navbar navbar-expand-lg navbar-light bg-white py-3" aria-label="Haupt­navigation">
+<header class="site-header">
+  <nav class="navbar navbar-expand-lg navbar-light" aria-label="Hauptnavigation">
     <div class="container">
-      <a class="navbar-brand d-flex align-items-center gap-2" href="/">
-        {logoUrl ? (
-          <img src={logoUrl} alt={siteSettings.studioName} height="40" />
-        ) : (
-          <span>{siteSettings.studioName}</span>
-        )}
+      <a class="navbar-brand" href="/" aria-label={`${siteSettings.studioName} – zur Startseite`}>
+        <img src={logoUrl} alt={siteSettings.studioName} width="98" height="56" />
       </a>
       <button
-        class="navbar-toggler"
+        class="navbar-toggler nav-toggle"
         type="button"
         aria-controls="haupt-navigation"
         aria-expanded="false"
         aria-label="Navigation öffnen"
         data-nav-toggle
       >
-        <span class="navbar-toggler-icon"></span>
+        <span></span>
+        <span></span>
       </button>
       <div class="collapse navbar-collapse" id="haupt-navigation">
-        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
           {navLinks.map((link) => (
             <li class="nav-item">
-              <a
-                class="nav-link"
-                href={link.href}
-                aria-current={isActive(link.href) ? 'page' : undefined}
-              >
+              <a class="nav-link" href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
                 {link.label}
               </a>
             </li>
           ))}
-          <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-            <BookingButton url={siteSettings.planityUrl} size="sm" />
+          <li class="nav-item ms-lg-3 mt-3 mt-lg-0 d-none d-lg-block">
+            <BookingButton settings={siteSettings} size="sm" />
           </li>
         </ul>
       </div>
@@ -68,21 +61,17 @@ function isActive(href: string) {
 </header>
 
 <script>
-  // Minimaler, framework-freier Navigation-Toggle (ersetzt bootstrap.bundle.js /
-  // Popper, da weder Dropdowns noch Tooltips benötigt werden – hält das
-  // JavaScript-Budget der Seite bewusst klein).
+  // Minimaler Navigation-Toggle ohne bootstrap.bundle.js, da weder Dropdowns
+  // noch Tooltips benötigt werden.
   const toggle = document.querySelector('[data-nav-toggle]');
   const menu = document.getElementById('haupt-navigation');
 
-  toggle?.addEventListener('click', () => {
-    const istOffen = menu?.classList.toggle('show');
-    toggle.setAttribute('aria-expanded', String(Boolean(istOffen)));
-  });
+  function setzeStatus(offen: boolean) {
+    menu?.classList.toggle('show', offen);
+    toggle?.setAttribute('aria-expanded', String(offen));
+    toggle?.setAttribute('aria-label', offen ? 'Navigation schließen' : 'Navigation öffnen');
+  }
 
-  menu?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      menu.classList.remove('show');
-      toggle?.setAttribute('aria-expanded', 'false');
-    });
-  });
+  toggle?.addEventListener('click', () => setzeStatus(!menu?.classList.contains('show')));
+  menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setzeStatus(false)));
 </script>

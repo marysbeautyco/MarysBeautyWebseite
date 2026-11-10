@@ -19,6 +19,7 @@ export default defineType({
       name: 'bild',
       title: 'Bild (Studio / Team)',
       type: 'image',
+      description: 'Erscheint in einem Bogen. Am besten ein Foto im Hochformat (4:5).',
       options: { hotspot: true },
       fields: [altField],
     }),

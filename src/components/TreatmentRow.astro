@@ -1,0 +1,43 @@
+---
+import Icon from './Icon.astro';
+import { getBookingHref } from '../lib/booking';
+import { urlFor, getImageAlt } from '../lib/image';
+import type { SiteSettings, Treatment } from '../types/sanity';
+
+interface Props {
+  treatment: Treatment;
+  settings: SiteSettings;
+}
+
+const { treatment, settings } = Astro.props;
+const bildUrl = urlFor(treatment.bild, 320);
+const buchungsHref = getBookingHref(settings, treatment.planityUrl);
+const isExternal = /^https?:/.test(buchungsHref);
+---
+
+<article class="treatment-row fade-in-up">
+  {bildUrl && (
+    <img
+      class="treatment-row__image"
+      src={bildUrl}
+      alt={getImageAlt(treatment.bild, treatment.titel)}
+      loading="lazy"
+      width="160"
+      height="200"
+    />
+  )}
+  <div class="treatment-row__body">
+    <h3>{treatment.titel}</h3>
+    <p>{treatment.kurzbeschreibung}</p>
+    <a
+      href={buchungsHref}
+      class="link-arrow"
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noopener noreferrer' : undefined}
+      aria-label={`${treatment.titel} buchen`}
+      data-planity-booking
+    >
+      Buchen <Icon name="arrow" size={15} />
+    </a>
+  </div>
+</article>

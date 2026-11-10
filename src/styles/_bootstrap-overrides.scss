@@ -1,65 +1,78 @@
-// Zentrale Design-Tokens für Mary's Beauty.
+// Zentrale Design-Tokens für Marys Beauty.
 // Diese Datei überschreibt Bootstrap-Variablen VOR dem Bootstrap-Import,
-// damit das gesamte Grid-, Komponenten- und Utility-System automatisch
-// die gewünschte, hochwertige Farb- und Typografiesprache übernimmt.
+// damit Grid, Komponenten und Utilities automatisch die Markenfarben
+// und die Typografie übernehmen.
 
-// --- Farbpalette -----------------------------------------------------------
-$cream: #fbf7f1; // Cremeweiß – Seitenhintergrund
-$beige: #f3e9dc; // Beige – alternative Flächen
-$sand: #e8d8c3; // Sandfarben – Rahmen, Trenner
-$rose: #e4c7c3; // dezentes Rosé – Akzent
-$champagne: #d9b48a; // Champagner-Gold – Haupt-Akzent / Buttons
-$anthracite: #2d2a27; // dunkles Anthrazit – Fließtext
-$anthracite-soft: #534d47; // abgeschwächtes Anthrazit – Sekundärtext
+// --- Farbpalette: sanfte Braun- und Beigetöne -------------------------------
+$ivory: #fbf8f3; // Seitenhintergrund
+$linen: #f4ede3; // ruhige Flächen
+$sand: #e7dccd; // Linien und Rahmen
+$taupe: #c8b5a0; // dekorative Akzente (nicht für Fließtext)
+$caramel: #a58567; // dekorative Akzente (nicht für Fließtext)
+$mocha: #6f5643; // Buttons, kleine Beschriftungen, Akzentflächen
+$mocha-dark: #5b4536; // Hover-Zustände
+$espresso: #3a2c23; // Text und Footer
+$espresso-soft: #6e5f53; // Sekundärtext
 
 $white: #ffffff;
-$body-bg: $cream;
-$body-color: $anthracite;
+$body-bg: $ivory;
+$body-color: $espresso;
 
-$primary: $champagne;
-$secondary: $rose;
-$light: $beige;
-$dark: $anthracite;
+$primary: $mocha;
+$secondary: $caramel;
+$light: $linen;
+$dark: $espresso;
 
 $theme-colors: (
   'primary': $primary,
   'secondary': $secondary,
-  'success': #8a9a7b,
-  'info': #8aa6a3,
-  'warning': #d9b48a,
-  'danger': #b5695f,
+  'success': #7f8a6c,
+  'info': #8a9a98,
+  'warning': $caramel,
+  'danger': #a4574c,
   'light': $light,
   'dark': $dark,
 );
 
 // --- Typografie --------------------------------------------------------
-$font-family-sans-serif: 'Jost', system-ui, -apple-system, 'Segoe UI', sans-serif;
-$headings-font-family: 'Playfair Display', Georgia, serif;
+// Montserrat entspricht dem Schriftzug im Logo, Cormorant Garamond greift
+// dessen kontrastreiche Serifen-Buchstaben auf. Beide werden selbst gehostet.
+$font-family-sans-serif: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+$font-family-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+$headings-font-family: $font-family-serif;
 $headings-font-weight: 500;
-$headings-color: $anthracite;
-$body-color-secondary: $anthracite-soft;
+$headings-color: $espresso;
+$headings-line-height: 1.12;
 
-$font-size-base: 1.05rem;
-$line-height-base: 1.65;
-$headings-line-height: 1.2;
+$font-size-base: 0.97rem;
+$line-height-base: 1.8;
 
 // --- Formensprache -------------------------------------------------------
-$border-radius: 0.6rem;
-$border-radius-sm: 0.4rem;
-$border-radius-lg: 1rem;
+$border-radius: 0.25rem;
+$border-radius-sm: 0.15rem;
+$border-radius-lg: 0.4rem;
 $border-color: $sand;
 
-$btn-border-radius: 2rem; // weiche, pillenförmige Buttons
-$btn-padding-y: 0.7rem;
-$btn-padding-x: 1.75rem;
+$btn-border-radius: 0.15rem;
+$btn-border-radius-sm: 0.15rem;
+$btn-border-radius-lg: 0.15rem;
+$btn-padding-y: 0.9rem;
+$btn-padding-x: 2rem;
+$btn-padding-y-sm: 0.62rem;
+$btn-padding-x-sm: 1.35rem;
+$btn-padding-y-lg: 1.05rem;
+$btn-padding-x-lg: 2.5rem;
+$btn-font-size: 0.72rem;
+$btn-font-size-sm: 0.68rem;
+$btn-font-size-lg: 0.75rem;
 $btn-font-weight: 500;
 
-$navbar-light-color: $anthracite;
-$navbar-light-hover-color: $champagne;
-$navbar-light-active-color: $anthracite;
+$navbar-light-color: $espresso;
+$navbar-light-hover-color: $mocha;
+$navbar-light-active-color: $mocha;
 
-$link-color: $anthracite;
-$link-hover-color: $champagne;
+$link-color: $espresso;
+$link-hover-color: $mocha;
 $link-decoration: none;
 
 $enable-negative-margins: true;

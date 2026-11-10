@@ -1,0 +1,57 @@
+---
+import Icon from './Icon.astro';
+import { emailHref, socialLabels, socialLinkText, telefonHref } from '../lib/contact';
+import type { SiteSettings } from '../types/sanity';
+
+interface Props {
+  settings: SiteSettings;
+}
+
+const { settings } = Astro.props;
+---
+
+<dl class="contact-list">
+  <div>
+    <dt>Adresse</dt>
+    <dd>
+      <address>
+        {settings.adresse.strasse}<br />
+        {settings.adresse.plz} {settings.adresse.ort}
+      </address>
+      {settings.kartenlink && (
+        <a href={settings.kartenlink} target="_blank" rel="noopener noreferrer" class="link-arrow">
+          Route planen <Icon name="arrow" size={15} />
+        </a>
+      )}
+    </dd>
+  </div>
+  <div>
+    <dt>Telefon</dt>
+    <dd><a href={telefonHref(settings.telefon)}>{settings.telefon}</a></dd>
+  </div>
+  <div>
+    <dt>E-Mail</dt>
+    <dd><a href={emailHref(settings.email)}>{settings.email}</a></dd>
+  </div>
+  {settings.socialLinks?.map((link) => (
+    <div>
+      <dt>{socialLabels[link.plattform] ?? link.plattform}</dt>
+      <dd>
+        <a href={link.url} target="_blank" rel="noopener noreferrer">{socialLinkText(link)}</a>
+      </dd>
+    </div>
+  ))}
+  <div>
+    <dt>Zeiten</dt>
+    <dd>
+      <ul class="hours">
+        {settings.oeffnungszeiten.map((zeile) => (
+          <li>
+            <span>{zeile.tag}</span>
+            <span class="text-soft">{zeile.zeiten}</span>
+          </li>
+        ))}
+      </ul>
+    </dd>
+  </div>
+</dl>

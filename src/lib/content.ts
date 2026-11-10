@@ -1,9 +1,7 @@
-// Platzhalterinhalte für MARYS BEAUTY. Studioname, Behandlungstexte und der
-// Instagram-Handle stammen aus den vom Kunden gelieferten Texten/Preisliste;
-// Adresse, Telefon, E-Mail und Preise sind weiterhin FIKTIVE Platzhalter.
-// Diese Inhalte greifen nur, solange in Sanity noch keine echten Inhalte
-// gepflegt sind oder solange kein Sanity-Projekt verbunden ist, damit die
-// Seite von Anfang an vollständig und ansehnlich dargestellt werden kann.
+// Startinhalte für MARYS BEAUTY. Studioname, Behandlungstexte, Kontaktdaten und
+// Instagram-Name stammen vom Kunden. Sie greifen, solange in Sanity noch nichts
+// gepflegt ist, und sind zugleich die Quelle für den Sanity-Startdatensatz
+// (scripts/generate-sanity-seed.ts).
 // Preise werden bewusst NICHT gepflegt – sie kommen ausschließlich aus Planity.
 import type {
   AboutPage,
@@ -19,31 +17,26 @@ import type {
 export const siteSettingsFallback: SiteSettings = {
   studioName: 'Marys Beauty',
   claim: 'Für Ihre natürliche Schönheit und Ihr Wohlbefinden',
-  // Adresse, Telefon und E-Mail sind weiterhin fiktive Platzhalter (PLZ/Ort unbekannt).
   adresse: {
-    strasse: 'Musterstraße 12',
-    plz: '12345',
-    ort: 'Musterstadt',
+    strasse: 'Kirchstraße 11',
+    plz: '48282',
+    ort: 'Emsdetten',
   },
-  telefon: '+49 123 4567890',
-  email: 'info@marysbeauty.co',
-  oeffnungszeiten: [
-    { tag: 'Montag – Freitag', zeiten: '09:00 – 18:00 Uhr' },
-    { tag: 'Samstag', zeiten: '09:00 – 16:00 Uhr' },
-    { tag: 'Sonntag', zeiten: 'geschlossen' },
-  ],
+  telefon: '0171 1009917',
+  email: 'marysbeautyco7@gmail.com',
+  // Feste Öffnungszeiten liegen noch nicht vor.
+  oeffnungszeiten: [{ tag: 'Termine', zeiten: 'nach Vereinbarung' }],
   // Instagram-Handle @marysbeauty.co stammt aus der gelieferten Preisliste.
   socialLinks: [{ plattform: 'instagram', url: 'https://www.instagram.com/marysbeauty.co/' }],
-  planityUrl: 'https://www.planity.com/',
-  kartenlink: 'https://maps.google.com/?q=Musterstra%C3%9Fe+12+12345+Musterstadt',
+  kartenlink: 'https://www.google.com/maps/search/?api=1&query=Kirchstra%C3%9Fe+11%2C+48282+Emsdetten',
 };
 
 export const homePageFallback: HomePage = {
-  heroUeberschrift: 'Willkommen bei Marys Beauty',
+  heroUeberschrift: 'Natürliche Schönheit, individuell gepflegt',
   heroText:
-    'Bei Marys Beauty stehen Ihre natürliche Schönheit und Ihr Wohlbefinden im Mittelpunkt. Mit modernen Behandlungsmethoden, hochwertigen Pflegeprodukten und individuell abgestimmten Anwendungen sorgen wir für ein gepflegtes und strahlendes Erscheinungsbild.',
-  heroButtonText: 'Jetzt Termin buchen',
-  kurzvorstellungTitel: 'Herzlich willkommen',
+    'Moderne Behandlungsmethoden, hochwertige Pflegeprodukte und individuell abgestimmte Anwendungen für ein gepflegtes und strahlendes Erscheinungsbild.',
+  heroButtonText: 'Termin buchen',
+  kurzvorstellungTitel: 'Herzlich willkommen bei Marys Beauty',
   kurzvorstellungText:
     'Mit modernen Behandlungsmethoden, hochwertigen Pflegeprodukten und individuell abgestimmten Anwendungen bieten wir Ihnen professionelle Beautybehandlungen – von Facials über Permanent Make-up bis zur Laserhaarentfernung. Jede Anwendung wird unter Berücksichtigung Ihrer persönlichen Wünsche und Bedürfnisse ausgewählt.',
   vorteile: [
@@ -55,9 +48,27 @@ export const homePageFallback: HomePage = {
 };
 
 export const treatmentCategoriesFallback: TreatmentCategory[] = [
-  { _id: 'cat-facials', titel: 'Facials', slug: { current: 'facials' }, reihenfolge: 1 },
-  { _id: 'cat-specials', titel: 'Specials', slug: { current: 'specials' }, reihenfolge: 2 },
-  { _id: 'cat-laser', titel: 'Laserhaarentfernung', slug: { current: 'laserhaarentfernung' }, reihenfolge: 3 },
+  {
+    _id: 'cat-facials',
+    titel: 'Facials',
+    slug: { current: 'facials' },
+    beschreibung: 'Reinigung, Pflege und moderne Technologie für ein frisches, strahlendes Hautbild.',
+    reihenfolge: 1,
+  },
+  {
+    _id: 'cat-specials',
+    titel: 'Specials',
+    slug: { current: 'specials' },
+    beschreibung: 'Wimpern, Brauen und Permanent Make-up, dezent betont und natürlich im Ausdruck.',
+    reihenfolge: 2,
+  },
+  {
+    _id: 'cat-laser',
+    titel: 'Laserhaarentfernung',
+    slug: { current: 'laserhaarentfernung' },
+    beschreibung: 'Dauerhaft glatte Haut für Gesicht und Körper, abgestimmt in einer persönlichen Beratung.',
+    reihenfolge: 3,
+  },
 ];
 
 export const treatmentsFallback: Treatment[] = [
@@ -202,20 +213,20 @@ const impressumPlatzhalter = `## Angaben gemäß § 5 TMG
 **[PLATZHALTER – bitte durch echte Angaben ersetzen]**
 
 Marys Beauty
-Musterstraße 12
-12345 Musterstadt
+Kirchstraße 11
+48282 Emsdetten
 
 Vertreten durch: Mary [Nachname PLATZHALTER]
 
 **Kontakt**
-Telefon: +49 123 4567890
-E-Mail: info@marysbeauty.co
+Telefon: 0171 1009917
+E-Mail: marysbeautyco7@gmail.com
 
 **Umsatzsteuer-ID**
 [PLATZHALTER – USt-IdNr. gemäß §27a Umsatzsteuergesetz]
 
 **Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV**
-Mary [Nachname PLATZHALTER], Musterstraße 12, 12345 Musterstadt
+Mary [Nachname PLATZHALTER], Kirchstraße 11, 48282 Emsdetten
 
 ---
 
@@ -230,7 +241,7 @@ sowie ggf. Planity als externen Buchungsdienst. Beim Besuch dieser Seiten könne
 technisch notwendige Daten (z. B. IP-Adresse, Zugriffszeit) verarbeitet werden.
 
 **Verantwortlicher**
-Marys Beauty, Musterstraße 12, 12345 Musterstadt, info@marysbeauty.co
+Marys Beauty, Kirchstraße 11, 48282 Emsdetten, marysbeautyco7@gmail.com
 
 **Hosting**
 Diese Website wird bei Cloudflare, Inc. gehostet. Weitere Informationen:

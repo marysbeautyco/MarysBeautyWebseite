@@ -21,7 +21,7 @@ export default defineType({
       name: 'logo',
       title: 'Logo',
       type: 'image',
-      description: 'Erscheint oben links in der Navigation. Am besten ein Logo mit transparentem Hintergrund.',
+      description: 'Erscheint oben links in der Navigation. Bitte ein PNG mit transparentem Hintergrund verwenden. Leer lassen, um das hinterlegte Standardlogo zu nutzen.',
       options: { hotspot: true },
       fields: [altField],
     }),
@@ -41,7 +41,7 @@ export default defineType({
       name: 'telefon',
       title: 'Telefonnummer',
       type: 'string',
-      description: 'Bitte im Format +49 123 4567890 eingeben, damit der Klick-zum-Anrufen-Link funktioniert.',
+      description: 'So wie sie auf der Webseite erscheinen soll, z. B. 0171 1009917 oder +49 171 1009917.',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -68,8 +68,8 @@ export default defineType({
       title: 'Planity-Buchungslink',
       type: 'url',
       description:
-        'Der Standard-Buchungslink, der z. B. für den "Jetzt Termin buchen"-Button verwendet wird (z. B. https://www.planity.com/ihr-studio).',
-      validation: (Rule) => Rule.required().uri({ scheme: ['http', 'https'] }),
+        'Der Link zu Ihrer Studio-Seite bei Planity (z. B. https://www.planity.com/ihr-studio). Alle Buchungs-Buttons führen dann direkt dorthin. Solange das Feld leer ist, zeigen die Buttons auf die Seite "Termin buchen" mit Telefon und E-Mail.',
+      validation: (Rule) => Rule.uri({ scheme: ['http', 'https'] }),
     }),
     defineField({
       name: 'planityEmbedCode',
@@ -77,7 +77,7 @@ export default defineType({
       type: 'text',
       rows: 6,
       description:
-        'Nur ausfüllen, falls Planity Pro das White-Label-Buchungsmodul für dieses Studio freigeschaltet hat. Den von Planity bereitgestellten Einbettungscode hier unverändert einfügen – er wird dann zusätzlich zum normalen Buchungs-Button auf der Kontaktseite angezeigt. Leer lassen, wenn nur der normale Buchungslink (Variante A) genutzt werden soll.',
+        'Nur ausfüllen, falls Planity Pro das White-Label-Buchungsmodul für dieses Studio freigeschaltet hat. Den von Planity bereitgestellten Einbettungscode hier unverändert einfügen. Die Buchung läuft dann direkt auf der Seite "Termin buchen" dieser Webseite. Leer lassen, wenn nur der normale Buchungslink genutzt werden soll.',
     }),
     defineField({
       name: 'kartenlink',

@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactDetails from '../components/ContactDetails.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { getBookingMode } from '../lib/booking';
+import { getSiteSettings } from '../lib/site';
+import { emailHref, telefonHref } from '../lib/contact';
+
+const siteSettings = await getSiteSettings();
+const modus = getBookingMode(siteSettings);
+---
+
+<BaseLayout
+  title="Termin buchen"
+  description={`Vereinbaren Sie Ihren Termin bei ${siteSettings.studioName} in ${siteSettings.adresse.ort}.`}
+>
+  <PageHeader
+    eyebrow="Online-Termin"
+    title="Termin buchen"
+    lead={modus === 'kontakt'
+      ? 'Rufen Sie uns an oder schreiben Sie uns. Wir finden gemeinsam den passenden Termin für Sie.'
+      : 'Wählen Sie Ihre Wunschbehandlung und einen freien Termin.'}
+  />
+
+  <section class="section">
+    <div class="container">
+      {modus === 'embed' && (
+        /* Offizieller Planity-Code aus den Website-Einstellungen in Sanity.
+           Die Sicherheitsregeln dafür stehen in public/_headers (Block /termin). */
+        <div class="planity-embed" set:html={siteSettings.planityEmbedCode} />
+      )}
+
+      {modus === 'link' && (
+        <div class="empty-state">
+          <p class="section-lead mx-auto mb-4">Die Buchung öffnet sich in einem neuen Tab bei unserem Partner Planity.</p>
+          <a class="btn btn-primary btn-lg" href={siteSettings.planityUrl} target="_blank" rel="noopener noreferrer" data-planity-booking>
+            Zur Online-Buchung
+          </a>
+        </div>
+      )}
+
+      {modus === 'kontakt' && (
+        <div class="row g-5 align-items-stretch">
+          <div class="col-lg-5">
+            <div class="booking-panel surface-dark">
+              <h2>Wir sind gerne für Sie da</h2>
+              <p class="text-soft mb-4">Die Online-Buchung steht in Kürze zur Verfügung.</p>
+              <div class="d-flex flex-wrap gap-3">
+                <a class="btn btn-light" href={telefonHref(siteSettings.telefon)}>Anrufen</a>
+                <a class="btn btn-outline-light" href={emailHref(siteSettings.email)}>E-Mail</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <ContactDetails settings={siteSettings} />
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,13 +1,17 @@
 ---
+import '@fontsource/montserrat/latin-400.css';
+import '@fontsource/montserrat/latin-500.css';
+import '@fontsource/cormorant-garamond/latin-400.css';
+import '@fontsource/cormorant-garamond/latin-500.css';
 import '../styles/global.scss';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Seo from '../components/Seo.astro';
 import BookingButton from '../components/BookingButton.astro';
-import { sanityFetch } from '../lib/sanity';
-import { siteSettingsQuery } from '../lib/queries';
-import { siteSettingsFallback } from '../lib/content';
-import type { Seo as SeoType, SiteSettings } from '../types/sanity';
+import Icon from '../components/Icon.astro';
+import { getSiteSettings } from '../lib/site';
+import { telefonHref } from '../lib/contact';
+import type { Seo as SeoType } from '../types/sanity';
 
 interface Props {
   title: string;
@@ -18,7 +22,7 @@ interface Props {
 
 const { title, description, seo, structuredData } = Astro.props;
 
-const siteSettings = (await sanityFetch<SiteSettings>(siteSettingsQuery)) ?? siteSettingsFallback;
+const siteSettings = await getSiteSettings();
 ---
 
 <!doctype html>
@@ -26,14 +30,10 @@ const siteSettings = (await sanityFetch<SiteSettings>(siteSettingsQuery)) ?? sit
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#2d2a27" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="/favicon-48.png" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#fbf8f3" />
     <Seo title={title} description={description} seo={seo} siteSettings={siteSettings} structuredData={structuredData} />
   </head>
   <body>
@@ -43,29 +43,37 @@ const siteSettings = (await sanityFetch<SiteSettings>(siteSettingsQuery)) ?? sit
       <slot />
     </main>
     <Footer siteSettings={siteSettings} />
-    <div class="booking-fab">
-      <BookingButton url={siteSettings.planityUrl} label="Termin buchen" />
+    <div class="mobile-bar">
+      <BookingButton settings={siteSettings} size="sm" />
+      <a class="mobile-bar__call" href={telefonHref(siteSettings.telefon)} aria-label="Anrufen">
+        <Icon name="phone" />
+      </a>
     </div>
 
     <script>
-      // Dezente Einblend-Animation beim Scrollen – respektiert prefers-reduced-motion
-      // über CSS (siehe global.scss) und fällt ohne IntersectionObserver-Support
-      // einfach auf sichtbare Inhalte zurück.
-      if ('IntersectionObserver' in window) {
+      // Blendet nur Elemente unterhalb des sichtbaren Bereichs kurz aus und beim
+      // Scrollen wieder ein. Ohne JavaScript bleibt alles sichtbar.
+      const bewegungErlaubt = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if ('IntersectionObserver' in window && bewegungErlaubt) {
         const beobachter = new IntersectionObserver(
           (eintraege) => {
             for (const eintrag of eintraege) {
               if (eintrag.isIntersecting) {
-                eintrag.target.classList.add('is-visible');
+                eintrag.target.classList.remove('is-pending');
                 beobachter.unobserve(eintrag.target);
               }
             }
           },
-          { threshold: 0.15 }
+          { threshold: 0.1 }
         );
-        document.querySelectorAll('.fade-in-up').forEach((el) => beobachter.observe(el));
-      } else {
-        document.querySelectorAll('.fade-in-up').forEach((el) => el.classList.add('is-visible'));
+
+        document.querySelectorAll('.fade-in-up').forEach((el) => {
+          if (el.getBoundingClientRect().top > window.innerHeight * 0.92) {
+            el.classList.add('is-pending');
+            beobachter.observe(el);
+          }
+        });
       }
     </script>
   </body>

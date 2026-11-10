@@ -1,21 +1,26 @@
 ---
+import { getBookingHref } from '../lib/booking';
+import type { SiteSettings } from '../types/sanity';
+
 interface Props {
-  url: string;
+  settings: SiteSettings;
+  treatmentUrl?: string;
   label?: string;
-  variant?: 'primary' | 'outline-light' | 'outline-dark';
+  variant?: 'primary' | 'light' | 'outline-light' | 'outline-dark';
   size?: 'sm' | 'lg';
   class?: string;
 }
 
-const { url, label = 'Jetzt Termin buchen', variant = 'primary', size, class: className = '' } = Astro.props;
-const sizeClass = size ? `btn-${size}` : '';
+const { settings, treatmentUrl, label = 'Termin buchen', variant = 'primary', size, class: className = '' } = Astro.props;
+const href = getBookingHref(settings, treatmentUrl);
+const isExternal = /^https?:/.test(href);
 ---
 
 <a
-  href={url}
-  class:list={['btn', `btn-${variant}`, sizeClass, className]}
-  target="_blank"
-  rel="noopener noreferrer"
+  href={href}
+  class:list={['btn', `btn-${variant}`, size && `btn-${size}`, className]}
+  target={isExternal ? '_blank' : undefined}
+  rel={isExternal ? 'noopener noreferrer' : undefined}
   data-planity-booking
 >
   {label}

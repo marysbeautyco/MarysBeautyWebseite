@@ -1,24 +1,23 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { sanityFetch } from '../lib/sanity';
-import { legalPageQuery, siteSettingsQuery } from '../lib/queries';
-import { legalPagesFallback, siteSettingsFallback } from '../lib/content';
+import PageHeader from '../components/PageHeader.astro';
+import { legalPageQuery } from '../lib/queries';
+import { legalPagesFallback } from '../lib/content';
+import { getContent, getSiteSettings } from '../lib/site';
 import { richTextToHtml } from '../lib/richtext';
-import type { LegalPage, SiteSettings } from '../types/sanity';
+import type { LegalPage } from '../types/sanity';
 
-const siteSettings = (await sanityFetch<SiteSettings>(siteSettingsQuery)) ?? siteSettingsFallback;
-const seite =
-  (await sanityFetch<LegalPage>(legalPageQuery, { slug: 'datenschutz' })) ?? legalPagesFallback.datenschutz;
+const siteSettings = await getSiteSettings();
+const seite = await getContent<LegalPage>(legalPageQuery, legalPagesFallback.datenschutz, { slug: 'datenschutz' });
 const inhaltHtml = richTextToHtml(seite.inhalt);
 ---
 
 <BaseLayout title={seite.titel} description={`Datenschutzerklärung von ${siteSettings.studioName}.`} seo={seite.seo}>
+  <PageHeader title={seite.titel} />
   <section class="section">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-8">
-          <h1 class="section-title">{seite.titel}</h1>
-          <hr class="divider" />
           <div class="legal-content" set:html={inhaltHtml} />
         </div>
       </div>

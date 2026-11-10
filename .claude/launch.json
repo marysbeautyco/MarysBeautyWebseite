@@ -4,7 +4,19 @@
     {
       "name": "astro-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "port": 4321
+    },
+    {
+      "name": "astro-dev-vs-node",
+      "runtimeExecutable": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\MSBuild\\Microsoft\\VisualStudio\\NodeJs\\node.exe",
+      "runtimeArgs": [
+        "node_modules/astro/bin/astro.mjs",
+        "dev"
+      ],
       "port": 4321
     }
   ]

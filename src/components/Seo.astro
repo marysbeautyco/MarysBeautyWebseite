@@ -1,5 +1,6 @@
 ---
 import { urlFor } from '../lib/image';
+import { telefonInternational } from '../lib/contact';
 import { safeJsonLd } from '../lib/safeJson';
 import type { Seo as SeoType, SiteSettings } from '../types/sanity';
 
@@ -18,7 +19,7 @@ const metaDescription = seo?.metaDescription?.trim() || description;
 const noIndex = Boolean(seo?.noIndex);
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
-const ogImageUrl = urlFor(seo?.ogImage, 1200) || new URL('/og-default.svg', Astro.site).toString();
+const ogImageUrl = urlFor(seo?.ogImage, 1200) || new URL('/og-default.png', Astro.site).toString();
 
 const fullTitle = `${metaTitle} | ${siteSettings.studioName}`;
 
@@ -28,7 +29,10 @@ const localBusinessSchema = {
   name: siteSettings.studioName,
   description: metaDescription,
   url: Astro.site?.toString(),
-  telephone: siteSettings.telefon,
+  logo: new URL('/brand/marys-beauty-logo-schwarz.png', Astro.site).toString(),
+  image: ogImageUrl,
+  hasMap: siteSettings.kartenlink,
+  telephone: telefonInternational(siteSettings.telefon),
   email: siteSettings.email,
   address: {
     '@type': 'PostalAddress',

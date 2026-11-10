@@ -10,9 +10,9 @@ export default defineType({
   fields: [
     defineField({
       name: 'heroBild',
-      title: 'Hero-Hintergrundbild',
+      title: 'Hero-Bild',
       type: 'image',
-      description: 'Großes Bild ganz oben auf der Startseite. Querformat, möglichst hochauflösend.',
+      description: 'Erscheint oben auf der Startseite in einem Bogen. Am besten ein Foto im Hochformat (4:5). Ohne Bild wird das Monogramm angezeigt.',
       options: { hotspot: true },
       fields: [altField],
     }),
@@ -51,7 +51,7 @@ export default defineType({
       title: 'Vorteile / Besonderheiten',
       type: 'array',
       of: [{ type: 'vorteil' }],
-      description: 'Werden als kleine Kacheln auf der Startseite angezeigt (z. B. 4 Stück).',
+      description: 'Werden als Spalten auf der Startseite angezeigt (am besten 4 Stück).',
     }),
     defineField({
       name: 'galerieVorschau',

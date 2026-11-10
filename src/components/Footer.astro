@@ -1,4 +1,5 @@
 ---
+import { emailHref, socialLabels, telefonHref } from '../lib/contact';
 import type { SiteSettings } from '../types/sanity';
 
 interface Props {
@@ -7,72 +8,69 @@ interface Props {
 
 const { siteSettings } = Astro.props;
 const jahr = new Date().getFullYear();
-
-const socialLabels: Record<string, string> = {
-  instagram: 'Instagram',
-  facebook: 'Facebook',
-  tiktok: 'TikTok',
-  pinterest: 'Pinterest',
-  youtube: 'YouTube',
-};
-
-const telefonHref = `tel:${siteSettings.telefon.replace(/[^+\d]/g, '')}`;
-const emailHref = `mailto:${siteSettings.email}`;
 ---
 
-<footer class="footer section pb-4">
+<footer class="footer">
   <div class="container">
-    <div class="row gy-4">
+    <div class="row gy-5">
       <div class="col-lg-4">
-        <p class="h5 mb-3" style="font-family: var(--bs-font-serif, serif);">{siteSettings.studioName}</p>
-        {siteSettings.claim && <p class="opacity-75">{siteSettings.claim}</p>}
-        {siteSettings.socialLinks && siteSettings.socialLinks.length > 0 && (
-          <ul class="list-inline mt-3">
-            {siteSettings.socialLinks.map((link) => (
-              <li class="list-inline-item me-3">
-                <a href={link.url} target="_blank" rel="noopener noreferrer">
-                  {socialLabels[link.plattform] ?? link.plattform}
-                </a>
-              </li>
-            ))}
-          </ul>
-        )}
+        <img
+          class="footer__logo"
+          src="/brand/marys-beauty-logo-creme-480.png"
+          alt={siteSettings.studioName}
+          width="155"
+          height="88"
+          loading="lazy"
+        />
+        {siteSettings.claim && <p class="mb-0">{siteSettings.claim}</p>}
       </div>
 
-      <div class="col-lg-4">
-        <p class="h6 text-uppercase opacity-75 mb-3">Kontakt</p>
-        <address class="mb-0">
+      <div class="col-6 col-lg-2">
+        <p class="footer__heading">Entdecken</p>
+        <ul class="footer__links">
+          <li><a href="/behandlungen">Behandlungen</a></li>
+          <li><a href="/ueber-uns">Über uns</a></li>
+          <li><a href="/galerie">Galerie</a></li>
+          <li><a href="/termin">Termin buchen</a></li>
+        </ul>
+      </div>
+
+      <div class="col-6 col-lg-3">
+        <p class="footer__heading">Kontakt</p>
+        <address>
           {siteSettings.adresse.strasse}<br />
-          {siteSettings.adresse.plz} {siteSettings.adresse.ort}<br />
-          <a href={telefonHref}>{siteSettings.telefon}</a><br />
-          <a href={emailHref}>{siteSettings.email}</a>
+          {siteSettings.adresse.plz} {siteSettings.adresse.ort}
         </address>
-        {siteSettings.kartenlink && (
-          <a href={siteSettings.kartenlink} target="_blank" rel="noopener noreferrer" class="d-inline-block mt-2">
-            Anfahrt &amp; Karte öffnen →
-          </a>
-        )}
+        <ul class="footer__links mt-2">
+          <li><a href={telefonHref(siteSettings.telefon)}>{siteSettings.telefon}</a></li>
+          <li class="text-break"><a href={emailHref(siteSettings.email)}>{siteSettings.email}</a></li>
+          {siteSettings.socialLinks?.map((link) => (
+            <li>
+              <a href={link.url} target="_blank" rel="noopener noreferrer">
+                {socialLabels[link.plattform] ?? link.plattform}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <div class="col-lg-4">
-        <p class="h6 text-uppercase opacity-75 mb-3">Öffnungszeiten</p>
-        <ul class="list-unstyled mb-0">
+      <div class="col-lg-3">
+        <p class="footer__heading">Zeiten</p>
+        <ul class="footer__links">
           {siteSettings.oeffnungszeiten.map((zeile) => (
             <li class="d-flex justify-content-between gap-3">
               <span>{zeile.tag}</span>
-              <span class="opacity-75">{zeile.zeiten}</span>
+              <span>{zeile.zeiten}</span>
             </li>
           ))}
         </ul>
       </div>
     </div>
 
-    <hr class="my-4 opacity-25" />
-
-    <div class="d-flex flex-wrap justify-content-between gap-2 small opacity-75">
-      <p class="mb-0">&copy; {jahr} {siteSettings.studioName}. Alle Rechte vorbehalten.</p>
+    <div class="footer__bottom">
+      <p>&copy; {jahr} {siteSettings.studioName}</p>
       <nav aria-label="Rechtliches">
-        <a href="/impressum" class="me-3">Impressum</a>
+        <a href="/impressum">Impressum</a>
         <a href="/datenschutz">Datenschutz</a>
       </nav>
     </div>

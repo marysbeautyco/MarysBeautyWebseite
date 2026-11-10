@@ -18,6 +18,11 @@ export default defineConfig({
     defaultStrategy: 'hover',
   },
   vite: {
+    build: {
+      // Skripte nie inline ausgeben: Die Content-Security-Policy in public/_headers
+      // erlaubt mit script-src 'self' nur Skripte aus eigenen Dateien.
+      assetsInlineLimit: 0,
+    },
     css: {
       preprocessorOptions: {
         scss: {

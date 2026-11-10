@@ -22,6 +22,14 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'beschreibung',
+      title: 'Kurzbeschreibung',
+      type: 'text',
+      rows: 2,
+      description: 'Ein Satz zur Kategorie, sichtbar auf der Startseite und der Behandlungen-Seite.',
+      validation: (Rule) => Rule.max(160),
+    }),
+    defineField({
       name: 'reihenfolge',
       title: 'Reihenfolge',
       type: 'number',

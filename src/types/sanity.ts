@@ -44,7 +44,7 @@ export interface SiteSettings {
   email: string;
   oeffnungszeiten: OpeningHoursEntry[];
   socialLinks?: SocialLink[];
-  planityUrl: string;
+  planityUrl?: string;
   planityEmbedCode?: string;
   kartenlink?: string;
   seo?: Seo;
@@ -54,6 +54,7 @@ export interface TreatmentCategory {
   _id: string;
   titel: string;
   slug: { current: string };
+  beschreibung?: string;
   reihenfolge?: number;
 }
 

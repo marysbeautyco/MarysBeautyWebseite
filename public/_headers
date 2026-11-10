@@ -5,4 +5,15 @@
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Content-Security-Policy: default-src 'self'; img-src 'self' https://cdn.sanity.io data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self' https://*.api.sanity.io; frame-src https://www.planity.com https://*.planity.com; base-uri 'self'; form-action 'self'; frame-ancestors 'self'
+  Content-Security-Policy: default-src 'self'; img-src 'self' https://cdn.sanity.io data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; connect-src 'self' https://*.api.sanity.io; base-uri 'self'; form-action 'self'; frame-ancestors 'self'
+
+# Nur die Buchungsseite darf den Planity-Einbettungscode ausführen.
+# Lädt der Code von Planity Dateien von weiteren Domains, diese in beiden
+# Blöcken ergänzen.
+/termin
+  ! Content-Security-Policy
+  Content-Security-Policy: default-src 'self'; img-src 'self' https: data:; style-src 'self' 'unsafe-inline' https://*.planity.com; font-src 'self' https://*.planity.com data:; script-src 'self' 'unsafe-inline' https://*.planity.com; connect-src 'self' https://*.planity.com wss://*.planity.com; frame-src https://*.planity.com; base-uri 'self'; form-action 'self' https://*.planity.com; frame-ancestors 'self'
+
+/termin/
+  ! Content-Security-Policy
+  Content-Security-Policy: default-src 'self'; img-src 'self' https: data:; style-src 'self' 'unsafe-inline' https://*.planity.com; font-src 'self' https://*.planity.com data:; script-src 'self' 'unsafe-inline' https://*.planity.com; connect-src 'self' https://*.planity.com wss://*.planity.com; frame-src https://*.planity.com; base-uri 'self'; form-action 'self' https://*.planity.com; frame-ancestors 'self'

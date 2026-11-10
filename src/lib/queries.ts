@@ -55,7 +55,7 @@ export const treatmentsQuery = `*[_type == "treatment"] | order(reihenfolge asc,
 }`;
 
 export const treatmentCategoriesQuery = `*[_type == "treatmentCategory"] | order(reihenfolge asc, titel asc){
-  _id, titel, slug, reihenfolge
+  _id, titel, slug, beschreibung, reihenfolge
 }`;
 
 export const aboutPageQuery = `*[_type == "aboutPage"][0]{

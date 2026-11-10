@@ -1,0 +1,23 @@
+---
+interface Props {
+  src?: string | null;
+  alt?: string;
+  eager?: boolean;
+}
+
+const { src, alt = '', eager = false } = Astro.props;
+---
+
+<div class="arch">
+  {src ? (
+    <img
+      class="arch__photo"
+      src={src}
+      alt={alt}
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : undefined}
+    />
+  ) : (
+    <img class="arch__mark" src="/brand/marys-beauty-monogramm-creme.png" alt="" width="2881" height="1216" />
+  )}
+</div>

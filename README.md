@@ -127,6 +127,17 @@ Das Studio ist dann unter `http://localhost:3333` erreichbar. Die Navigation ist
 
 „Singleton"-Seiten (z. B. Website-Einstellungen) lassen sich nicht duplizieren oder löschen – es gibt technisch immer nur genau ein Dokument.
 
+**Startinhalte importieren:** Damit das Studio nicht leer beginnt, liegt unter `studio/seed/` ein fertiger Datensatz mit Kontaktdaten, Logo, Behandlungen und Seitentexten. Einmalig nach dem Anlegen des Projekts ausführen:
+
+```bash
+cd studio
+npx sanity dataset import seed/initial-content.ndjson production --missing
+```
+
+`--missing` überspringt Dokumente, die bereits existieren. Der Datensatz wird aus `src/lib/content.ts` erzeugt (`node scripts/generate-sanity-seed.ts`).
+
+Die Webseite ergänzt fehlende Sanity-Felder automatisch aus `src/lib/content.ts` (siehe `getContent` in `src/lib/site.ts`).
+
 ## 6. Sanity Studio veröffentlichen
 
 Damit die Inhaberin das Studio über einen eigenen Link erreicht (ohne dass Sie als Entwickler:in lokal etwas starten müssen), wird das Studio separat bei Sanity gehostet (aktuell offiziell unterstützter Weg, Stand dieses Projekts):
@@ -220,18 +231,26 @@ Ab jetzt löst jede Veröffentlichung in Sanity automatisch einen neuen Cloudfla
 
 ## 11. Planity-Integration aktivieren
 
-**Variante A – Einfacher Buchungslink (Standard, sofort einsatzbereit):**
+Alle Buchungs-Buttons laufen über `src/lib/booking.ts`. Das Verhalten ergibt sich allein aus den Feldern in Sanity:
 
-In Sanity unter „Allgemeine Website-Einstellungen" → Feld „Planity-Buchungslink" die echte Planity-URL des Studios eintragen (z. B. `https://www.planity.com/marys-beauty`). Der „Jetzt Termin buchen"-Button auf der gesamten Seite verwendet automatisch diesen Link.
+| Gepflegt in Sanity | Verhalten |
+|---|---|
+| nichts (aktueller Stand) | Buttons führen auf `/termin`, dort stehen Telefon und E-Mail |
+| Planity-Buchungslink | Buttons öffnen direkt die Planity-Seite des Studios |
+| White-Label-Einbettungscode | Buttons führen auf `/termin`, dort läuft die Buchung eingebettet |
+
+**Variante A – Einfacher Buchungslink (empfohlen):**
+
+In Sanity unter „Allgemeine Website-Einstellungen" → Feld „Planity-Buchungslink" die echte Planity-URL des Studios eintragen. Die reine Startseite `https://www.planity.com/` gilt als Platzhalter und wird ignoriert.
 
 **Variante B – Offizielles White-Label-Modul (optional, muss von Planity freigeschaltet sein):**
 
 1. Im Planity-Pro-Konto des Studios prüfen, ob das White-Label-Buchungsmodul verfügbar ist (ggf. bei Planity anfragen/freischalten lassen).
 2. Den von Planity bereitgestellten, offiziellen Einbettungscode kopieren.
 3. In Sanity unter „Allgemeine Website-Einstellungen" → Feld „Planity White-Label-Einbettungscode" **unverändert** einfügen.
-4. Der Code wird dann zusätzlich auf der Kontaktseite angezeigt (`src/pages/kontakt.astro`).
+4. Der Code wird dann auf der Buchungsseite ausgeführt (`src/pages/termin.astro`).
 
-**Wichtiger Hinweis:** Falls der Einbettungscode ein `<script src="...">` von einer externen Planity-Domain lädt, muss diese Domain zusätzlich in der Content-Security-Policy in `public/_headers` unter `script-src` (und ggf. `connect-src`/`frame-src`) ergänzt werden, sonst blockiert der Browser das Skript. `frame-src` ist dort bereits für `*.planity.com` vorbereitet.
+**Wichtiger Hinweis:** `public/_headers` enthält für `/termin` eine eigene Content-Security-Policy, die Inline-Skripte und `*.planity.com` erlaubt. Lädt der Einbettungscode Dateien von weiteren Domains, müssen diese in beiden `/termin`-Blöcken ergänzt werden, sonst blockiert der Browser sie. Nach dem Einfügen die Buchung einmal auf der Live-Seite testen, da die Header nur auf Cloudflare greifen.
 
 Die Seite funktioniert in jedem Fall vollständig, auch ganz ohne White-Label-Modul (reine Variante A).
 
@@ -294,9 +313,9 @@ Für das `studio/`-Projekt gilt entsprechend `npx tsc --noEmit` bzw. `npx sanity
 
 - [ ] Echtes Sanity-Projekt angelegt, Projekt-ID in Cloudflare-Umgebungsvariablen hinterlegt
 - [ ] Sanity Studio deployed (`npx sanity deploy`), Link funktioniert
-- [ ] Alle Platzhalterinhalte (`src/lib/content.ts` diente nur als Fallback) durch echte Inhalte in Sanity ersetzt: Adresse, Telefon, E-Mail, Öffnungszeiten, Social-Media-Links, Team, Galerie, Behandlungstexte
+- [ ] Alle Platzhalterinhalte (`src/lib/content.ts` diente nur als Fallback) durch echte Inhalte in Sanity ersetzt: Öffnungszeiten, Team, Galerie, Behandlungstexte
 - [ ] Echter Planity-Buchungslink hinterlegt
-- [ ] Echtes Logo hochgeladen
+- [ ] Logo prüfen (`public/brand/`, wird beim Seed-Import auch in Sanity angelegt)
 - [ ] Impressum und Datenschutzerklärung durch rechtlich geprüfte Fassungen ersetzt (aktuell bewusst nur Platzhalter-Musterstrukturen!)
 - [ ] GitHub-Repository erstellt und Code gepusht
 - [ ] Cloudflare Pages verbunden, Build erfolgreich, `PUBLIC_SITE_URL` korrekt gesetzt

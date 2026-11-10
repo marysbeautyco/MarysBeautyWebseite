@@ -1,74 +1,77 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BookingButton from '../../components/BookingButton.astro';
-import TreatmentCard from '../../components/TreatmentCard.astro';
-import { sanityFetch } from '../../lib/sanity';
-import { siteSettingsQuery, treatmentCategoriesQuery, treatmentsQuery } from '../../lib/queries';
-import { siteSettingsFallback, treatmentCategoriesFallback, treatmentsFallback } from '../../lib/content';
-import type { SiteSettings, Treatment, TreatmentCategory } from '../../types/sanity';
+import PageHeader from '../../components/PageHeader.astro';
+import TreatmentRow from '../../components/TreatmentRow.astro';
+import { treatmentCategoriesQuery, treatmentsQuery } from '../../lib/queries';
+import { treatmentCategoriesFallback, treatmentsFallback } from '../../lib/content';
+import { getContent, getSiteSettings, groupTreatments } from '../../lib/site';
+import type { Treatment, TreatmentCategory } from '../../types/sanity';
 
-const siteSettings = (await sanityFetch<SiteSettings>(siteSettingsQuery)) ?? siteSettingsFallback;
-const kategorien = (await sanityFetch<TreatmentCategory[]>(treatmentCategoriesQuery)) ?? treatmentCategoriesFallback;
-const treatments = (await sanityFetch<Treatment[]>(treatmentsQuery)) ?? treatmentsFallback;
+const siteSettings = await getSiteSettings();
+const kategorien = await getContent<TreatmentCategory[]>(treatmentCategoriesQuery, treatmentCategoriesFallback);
+const treatments = await getContent<Treatment[]>(treatmentsQuery, treatmentsFallback);
 
 const ohneKategorie = treatments.filter((t) => !t.kategorie);
-const gruppen = kategorien
-  .map((kategorie) => ({
-    kategorie,
-    treatments: treatments.filter((t) => t.kategorie?._id === kategorie._id),
-  }))
-  .filter((gruppe) => gruppe.treatments.length > 0);
+const gruppen = groupTreatments(kategorien, treatments);
 ---
 
 <BaseLayout
   title="Behandlungen"
-  description={`Übersicht aller Behandlungen bei ${siteSettings.studioName} – Preise und Buchung direkt über Planity.`}
+  description={`Alle Behandlungen bei ${siteSettings.studioName} in ${siteSettings.adresse.ort}: Facials, Permanent Make-up, Lash & Brow Lifting und Laserhaarentfernung.`}
 >
+  <PageHeader
+    eyebrow="Leistungen"
+    title="Unsere Behandlungen"
+    lead="Jede Anwendung wird auf Ihre Haut und Ihre Wünsche abgestimmt. Aktuelle Preise, Dauer und freie Termine sehen Sie direkt bei der Buchung."
+  >
+    <BookingButton settings={siteSettings} />
+  </PageHeader>
+
+  {gruppen.length > 1 && (
+    <nav class="border-bottom" aria-label="Kategorien">
+      <div class="container">
+        <ul class="chip-nav">
+          {gruppen.map(({ kategorie }) => (
+            <li><a href={`#${kategorie.slug.current}`}>{kategorie.titel}</a></li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+  )}
+
   <section class="section">
     <div class="container">
-      <div class="row justify-content-center text-center mb-5">
-        <div class="col-lg-8">
-          <h1 class="section-title">Unsere Behandlungen</h1>
-          <hr class="divider mx-auto" />
-          <p class="section-lead mx-auto">
-            Eine Übersicht unserer Leistungen. Aktuelle Preise, Dauer und freie Termine finden Sie direkt bei der
-            Online-Buchung über Planity.
-          </p>
-          <div class="mt-3">
-            <BookingButton url={siteSettings.planityUrl} label="Online-Terminkalender öffnen" />
+      {gruppen.map(({ kategorie, treatments: eintraege }) => (
+        <div class="row gy-4 treatment-group" id={kategorie.slug.current}>
+          <div class="col-lg-4">
+            <div class="treatment-group__heading">
+              <h2>{kategorie.titel}</h2>
+              {kategorie.beschreibung && <p class="text-soft mb-0">{kategorie.beschreibung}</p>}
+            </div>
           </div>
-        </div>
-      </div>
-
-      {gruppen.map((gruppe) => (
-        <div class="mb-5">
-          <h2 class="h3 mb-4">{gruppe.kategorie.titel}</h2>
-          <div class="row g-4">
-            {gruppe.treatments.map((treatment) => (
-              <div class="col-md-6 col-lg-4">
-                <TreatmentCard treatment={treatment} planityUrl={siteSettings.planityUrl} />
-              </div>
-            ))}
+          <div class="col-lg-7 offset-lg-1">
+            <div class="treatment-list">
+              {eintraege.map((treatment) => <TreatmentRow treatment={treatment} settings={siteSettings} />)}
+            </div>
           </div>
         </div>
       ))}
 
       {ohneKategorie.length > 0 && (
-        <div class="mb-5">
-          {gruppen.length > 0 && <h2 class="h3 mb-4">Weitere Behandlungen</h2>}
-          <div class="row g-4">
-            {ohneKategorie.map((treatment) => (
-              <div class="col-md-6 col-lg-4">
-                <TreatmentCard treatment={treatment} planityUrl={siteSettings.planityUrl} />
-              </div>
-            ))}
+        <div class="row gy-4 treatment-group">
+          <div class="col-lg-4">
+            <div class="treatment-group__heading">
+              <h2>Weitere Behandlungen</h2>
+            </div>
+          </div>
+          <div class="col-lg-7 offset-lg-1">
+            <div class="treatment-list">
+              {ohneKategorie.map((treatment) => <TreatmentRow treatment={treatment} settings={siteSettings} />)}
+            </div>
           </div>
         </div>
       )}
-
-      <p class="text-center opacity-75 small mt-4">
-        Preise und buchbare Leistungen werden aktuell in Planity gepflegt und dort bei der Terminbuchung angezeigt.
-      </p>
     </div>
   </section>
 </BaseLayout>

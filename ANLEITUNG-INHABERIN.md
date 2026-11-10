@@ -68,7 +68,7 @@ Nach dem Veröffentlichen dauert es ca. 1–2 Minuten, bis die neue Version onli
 
 Ihre Termine, Mitarbeiter:innen, Behandlungszeiten und **Preise** verwalten Sie weiterhin ganz normal direkt in **Planity** – nicht in Sanity. Das hat den Vorteil, dass Sie Preise nur an einer einzigen Stelle pflegen müssen und sich nichts widerspricht.
 
-- Ihren Planity-Buchungslink für den „Jetzt Termin buchen"-Button auf der Webseite tragen Sie unter **„Allgemeine Website-Einstellungen"** → Feld **„Planity-Buchungslink"** ein.
+- Ihren Planity-Buchungslink für alle „Termin buchen"-Buttons auf der Webseite tragen Sie unter **„Allgemeine Website-Einstellungen"** → Feld **„Planity-Buchungslink"** ein.
 - Alles rund um Terminkalender, verfügbare Zeiten, Mitarbeiter:innen und Preise bearbeiten Sie direkt in Ihrem gewohnten Planity-Konto.
 
 ## Bei Problemen

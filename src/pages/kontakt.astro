@@ -1,102 +1,42 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookingButton from '../components/BookingButton.astro';
-import { sanityFetch } from '../lib/sanity';
-import { contactPageQuery, siteSettingsQuery } from '../lib/queries';
-import { contactPageFallback, siteSettingsFallback } from '../lib/content';
-import type { ContactPage, SiteSettings } from '../types/sanity';
+import ContactDetails from '../components/ContactDetails.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { contactPageQuery } from '../lib/queries';
+import { contactPageFallback } from '../lib/content';
+import { getContent, getSiteSettings } from '../lib/site';
+import { adresseEinzeilig, telefonHref } from '../lib/contact';
+import type { ContactPage } from '../types/sanity';
 
-const siteSettings = (await sanityFetch<SiteSettings>(siteSettingsQuery)) ?? siteSettingsFallback;
-const contactPage = (await sanityFetch<ContactPage>(contactPageQuery)) ?? contactPageFallback;
-
-const telefonHref = `tel:${siteSettings.telefon.replace(/[^+\d]/g, '')}`;
-const emailHref = `mailto:${siteSettings.email}`;
-
-const socialLabels: Record<string, string> = {
-  instagram: 'Instagram',
-  facebook: 'Facebook',
-  tiktok: 'TikTok',
-  pinterest: 'Pinterest',
-  youtube: 'YouTube',
-};
+const siteSettings = await getSiteSettings();
+const contactPage = await getContent<ContactPage>(contactPageQuery, contactPageFallback);
 ---
 
 <BaseLayout
   title={contactPage.titel}
-  description={`Kontaktieren Sie ${siteSettings.studioName} – Adresse, Telefon, E-Mail und Öffnungszeiten.`}
+  description={`Kontakt zu ${siteSettings.studioName}: ${adresseEinzeilig(siteSettings)}, Telefon ${siteSettings.telefon}.`}
   seo={contactPage.seo}
 >
+  <PageHeader eyebrow="Wir sind für Sie da" title={contactPage.titel} lead={contactPage.einleitung} />
+
   <section class="section">
     <div class="container">
-      <div class="text-center mb-5">
-        <h1 class="section-title">{contactPage.titel}</h1>
-        <hr class="divider mx-auto" />
-        {contactPage.einleitung && <p class="section-lead mx-auto">{contactPage.einleitung}</p>}
-      </div>
-
-      <div class="row g-4 justify-content-center">
-        <div class="col-md-6 col-lg-4">
-          <div class="h-100 p-4 rounded-4 bg-champagne-soft">
-            <h2 class="h5 mb-3">Adresse</h2>
-            <address class="mb-3">
-              {siteSettings.adresse.strasse}<br />
-              {siteSettings.adresse.plz} {siteSettings.adresse.ort}
-            </address>
-            {siteSettings.kartenlink && (
-              <a href={siteSettings.kartenlink} target="_blank" rel="noopener noreferrer" class="btn btn-outline-dark btn-sm">
-                Anfahrt &amp; Karte öffnen
-              </a>
-            )}
-          </div>
+      <div class="row g-5 align-items-stretch">
+        <div class="col-lg-7">
+          <ContactDetails settings={siteSettings} />
         </div>
-
-        <div class="col-md-6 col-lg-4">
-          <div class="h-100 p-4 rounded-4 bg-champagne-soft">
-            <h2 class="h5 mb-3">Kontakt</h2>
-            <p class="mb-1"><a href={telefonHref}>{siteSettings.telefon}</a></p>
-            <p class="mb-3"><a href={emailHref}>{siteSettings.email}</a></p>
-            {siteSettings.socialLinks && siteSettings.socialLinks.length > 0 && (
-              <ul class="list-inline mb-0">
-                {siteSettings.socialLinks.map((link) => (
-                  <li class="list-inline-item me-3">
-                    <a href={link.url} target="_blank" rel="noopener noreferrer">
-                      {socialLabels[link.plattform] ?? link.plattform}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-          <div class="h-100 p-4 rounded-4 bg-champagne-soft">
-            <h2 class="h5 mb-3">Öffnungszeiten</h2>
-            <ul class="list-unstyled mb-0">
-              {siteSettings.oeffnungszeiten.map((zeile) => (
-                <li class="d-flex justify-content-between gap-3">
-                  <span>{zeile.tag}</span>
-                  <span class="opacity-75">{zeile.zeiten}</span>
-                </li>
-              ))}
-            </ul>
+        <div class="col-lg-5">
+          <div class="booking-panel surface-dark">
+            <h2>Ihr Termin</h2>
+            <p class="text-soft mb-4">Wählen Sie Ihre Wunschbehandlung und einen passenden Termin, oder rufen Sie uns einfach an.</p>
+            <div class="d-flex flex-wrap gap-3">
+              <BookingButton settings={siteSettings} variant="light" />
+              <a class="btn btn-outline-light" href={telefonHref(siteSettings.telefon)}>Anrufen</a>
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="text-center mt-5">
-        <p class="section-lead mx-auto mb-3">Termine buchen Sie am schnellsten direkt online über Planity:</p>
-        <BookingButton url={siteSettings.planityUrl} size="lg" />
-      </div>
-
-      {siteSettings.planityEmbedCode && (
-        <div class="mt-5">
-          <h2 class="h5 text-center mb-3">Online-Terminkalender</h2>
-          {/* Nur befüllt, wenn in Sanity ein offizieller Planity-White-Label-Einbettungscode
-             (Variante B) hinterlegt wurde – Inhalt stammt bewusst/vertrauenswürdig aus dem CMS. */}
-          <div class="planity-embed" set:html={siteSettings.planityEmbedCode} />
-        </div>
-      )}
     </div>
   </section>
 </BaseLayout>

@@ -32,7 +32,7 @@ export default defineType({
       title: 'Kurzbeschreibung',
       type: 'text',
       rows: 3,
-      description: 'Wird in der Übersichtskachel angezeigt.',
+      description: 'Wird in der Behandlungsliste angezeigt.',
       validation: (Rule) => Rule.required().max(280),
     }),
     defineField({
@@ -46,6 +46,7 @@ export default defineType({
       name: 'bild',
       title: 'Bild',
       type: 'image',
+      description: 'Optional. Wird als kleines Hochformat neben der Behandlung angezeigt.',
       options: { hotspot: true },
       fields: [altField],
     }),

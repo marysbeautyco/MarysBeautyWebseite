@@ -1,20 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
 ---
 
 <BaseLayout title="Seite nicht gefunden" description="Diese Seite konnte leider nicht gefunden werden.">
-  <section class="section">
-    <div class="container text-center">
-      <h1 class="section-title">404 – Seite nicht gefunden</h1>
-      <hr class="divider mx-auto" />
-      <p class="section-lead mx-auto mb-4">
-        Die aufgerufene Seite existiert leider nicht (mehr). Vielleicht hilft Ihnen einer dieser Links weiter:
-      </p>
-      <div class="d-flex flex-wrap justify-content-center gap-3">
-        <a href="/" class="btn btn-primary">Zur Startseite</a>
-        <a href="/behandlungen" class="btn btn-outline-dark">Behandlungen</a>
-        <a href="/kontakt" class="btn btn-outline-dark">Kontakt</a>
-      </div>
+  <PageHeader eyebrow="Fehler 404" title="Seite nicht gefunden" lead="Die aufgerufene Seite existiert leider nicht (mehr).">
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+      <a href="/" class="btn btn-primary">Zur Startseite</a>
+      <a href="/behandlungen" class="btn btn-outline-dark">Behandlungen</a>
     </div>
-  </section>
+  </PageHeader>
 </BaseLayout>
