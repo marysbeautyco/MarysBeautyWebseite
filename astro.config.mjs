@@ -1,15 +1,29 @@
 // @ts-check
+import { rename, rm } from 'node:fs/promises';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // Basis für Sitemap, robots.txt, Canonical-Links und Open-Graph-Tags.
 const siteUrl = 'https://marysbeautyco.de';
 
+// @astrojs/sitemap schreibt immer sitemap-index.xml plus sitemap-0.xml. Für diese
+// Seite reicht eine einzige Datei, die direkt unter /sitemap.xml alle Seiten listet.
+/** @type {import('astro').AstroIntegration} */
+const einzelneSitemap = {
+  name: 'einzelne-sitemap',
+  hooks: {
+    'astro:build:done': async ({ dir }) => {
+      await rename(new URL('sitemap-0.xml', dir), new URL('sitemap.xml', dir));
+      await rm(new URL('sitemap-index.xml', dir));
+    },
+  },
+};
+
 // https://astro.build/config
 export default defineConfig({
   site: siteUrl,
   output: 'static',
-  integrations: [sitemap()],
+  integrations: [sitemap(), einzelneSitemap],
   image: {
     // Hochwertige, aber kleine responsive Bilder für ein schnelles, SEO-freundliches Ergebnis.
     responsiveStyles: true,
