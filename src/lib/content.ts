@@ -16,9 +16,9 @@ import type {
   TreatmentCategory,
 } from '../types/sanity';
 
-/** Foto aus public/images/behandlungen, bis in Sanity ein eigenes Bild gepflegt ist. */
-function lokalesBild(name: string, alt: string): SanityImage {
-  return { asset: { _id: 'lokal', url: `/images/behandlungen/${name}.webp` }, alt };
+/** Foto aus public/images/<ordner>, bis in Sanity ein eigenes Bild gepflegt ist. */
+function lokalesBild(name: string, alt: string, ordner = 'behandlungen'): SanityImage {
+  return { asset: { _id: 'lokal', url: `/images/${ordner}/${name}.webp` }, alt };
 }
 
 export const siteSettingsFallback: SiteSettings = {
@@ -42,7 +42,7 @@ export const siteSettingsFallback: SiteSettings = {
 };
 
 export const homePageFallback: HomePage = {
-  heroBild: lokalesBild('lash-lifting', 'Lash Lifting an den Wimpern'),
+  heroBild: lokalesBild('combibrows', 'Permanent Make-up an den Augenbrauen'),
   heroUeberschrift: 'Natürliche Schönheit, individuell gepflegt',
   heroText:
     'Moderne Behandlungsmethoden, hochwertige Pflegeprodukte und individuell abgestimmte Anwendungen für ein gepflegtes und strahlendes Erscheinungsbild.',
@@ -208,7 +208,7 @@ export const treatmentsFallback: Treatment[] = [
 ];
 
 export const aboutPageFallback: AboutPage = {
-  bild: lokalesBild('microneedling', 'Microneedling-Stift auf der Stirn'),
+  bild: lokalesBild('gesichtsbehandlung', 'Entspannende Massage von Hals und Dekolleté'),
   titel: 'Über uns',
   philosophieTitel: 'Unsere Philosophie',
   philosophieText:
@@ -217,6 +217,7 @@ export const aboutPageFallback: AboutPage = {
     {
       _id: 'team-1',
       name: 'Mary',
+      bild: lokalesBild('mary', 'Mary, Inhaberin von Marys Beauty', 'team'),
       rolle: 'Inhaberin & Kosmetikerin',
       beschreibung:
         'Mit langjähriger Erfahrung und Leidenschaft für ihren Beruf legt Mary besonderen Wert auf individuelle Beratung, sorgfältige Behandlung und natürlich wirkende Ergebnisse.',
