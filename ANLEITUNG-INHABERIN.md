@@ -64,12 +64,13 @@ Wichtig zu wissen: **Nichts, was Sie in Sanity eingeben, ist sofort öffentlich 
 
 Nach dem Veröffentlichen dauert es ca. 1–2 Minuten, bis die neue Version online ist (die Webseite „baut sich" im Hintergrund automatisch neu).
 
-## Termine und Preise in Planity bearbeiten
+## Termine und Preise in Beautinda bearbeiten
 
-Ihre Termine, Mitarbeiter:innen, Behandlungszeiten und **Preise** verwalten Sie weiterhin ganz normal direkt in **Planity** – nicht in Sanity. Das hat den Vorteil, dass Sie Preise nur an einer einzigen Stelle pflegen müssen und sich nichts widerspricht.
+Ihre Termine, Behandlungszeiten und **Preise** verwalten Sie direkt in **Beautinda** – nicht in Sanity. So pflegen Sie Preise nur an einer einzigen Stelle und nichts widerspricht sich.
 
-- Ihren Planity-Buchungslink für alle „Termin buchen"-Buttons auf der Webseite tragen Sie unter **„Allgemeine Website-Einstellungen"** → Feld **„Planity-Buchungslink"** ein.
-- Alles rund um Terminkalender, verfügbare Zeiten, Mitarbeiter:innen und Preise bearbeiten Sie direkt in Ihrem gewohnten Planity-Konto.
+- Die allgemeinen „Termin buchen"-Buttons führen auf Ihre Beautinda-Studioseite. Den Link finden Sie unter **„Allgemeine Website-Einstellungen"** → Feld **„Online-Buchungslink (Beautinda)"**.
+- Der „Buchen"-Link bei einer einzelnen Behandlung öffnet Beautinda mit genau dieser Behandlung vorausgewählt – Ihre Kundinnen landen direkt bei der Terminauswahl. Der Link steht bei der Behandlung im Feld **„Direkter Buchungslink"**.
+- **Wichtig:** Wenn Sie in Beautinda eine Behandlung löschen und neu anlegen, ändert sich ihre interne Nummer und der direkte Link funktioniert nicht mehr. Dann bitte Ihrem Entwickler Bescheid geben (oder das Feld leeren – dann wird der allgemeine Link genutzt). Preise oder Dauer ändern ist dagegen unproblematisch.
 
 ## Bei Problemen
 

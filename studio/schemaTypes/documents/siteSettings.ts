@@ -65,10 +65,10 @@ export default defineType({
     }),
     defineField({
       name: 'planityUrl',
-      title: 'Planity-Buchungslink',
+      title: 'Online-Buchungslink (Beautinda)',
       type: 'url',
       description:
-        'Der Link zu Ihrer Studio-Seite bei Planity (z. B. https://www.planity.com/ihr-studio). Alle Buchungs-Buttons führen dann direkt dorthin. Solange das Feld leer ist, zeigen die Buttons auf die Seite "Termin buchen" mit Telefon und E-Mail.',
+        'Der Link zu Ihrer Studio-Seite bei Beautinda (z. B. https://beautinda.de/salon/pkRTjJWdfyqUFk88REa6). Alle allgemeinen "Termin buchen"-Buttons führen dorthin. Solange das Feld leer ist, zeigen die Buttons auf die Seite "Termin buchen" mit Telefon und E-Mail.',
       validation: (Rule) => Rule.uri({ scheme: ['http', 'https'] }),
     }),
     defineField({

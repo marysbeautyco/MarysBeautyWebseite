@@ -2,7 +2,7 @@
 // Instagram-Name stammen vom Kunden. Sie greifen, solange in Sanity noch nichts
 // gepflegt ist, und sind zugleich die Quelle für den Sanity-Startdatensatz
 // (scripts/generate-sanity-seed.ts).
-// Preise werden bewusst NICHT gepflegt – sie kommen ausschließlich aus Planity.
+// Preise werden bewusst NICHT gepflegt – sie kommen ausschließlich aus Beautinda.
 import type {
   AboutPage,
   ContactPage,
@@ -15,6 +15,17 @@ import type {
   Treatment,
   TreatmentCategory,
 } from '../types/sanity';
+
+const BEAUTINDA_SALON_ID = 'pkRTjJWdfyqUFk88REa6';
+
+/**
+ * Direktlink in die Beautinda-Buchung: Die Behandlung ist vorausgewählt,
+ * Kundinnen landen sofort bei der Terminauswahl. Die IDs stammen aus dem
+ * Beautinda-Salon (Feld "id" der jeweiligen Leistung).
+ */
+function beautindaBuchung(serviceId: string): string {
+  return `https://beautinda.de/book/${BEAUTINDA_SALON_ID}/select?services=${encodeURIComponent(serviceId)}`;
+}
 
 /** Foto aus public/images/<ordner>, bis in Sanity ein eigenes Bild gepflegt ist. */
 function lokalesBild(name: string, alt: string, ordner = 'behandlungen'): SanityImage {
@@ -38,6 +49,7 @@ export const siteSettingsFallback: SiteSettings = {
   ],
   // Instagram-Handle @marysbeauty.co stammt aus der gelieferten Preisliste.
   socialLinks: [{ plattform: 'instagram', url: 'https://www.instagram.com/marysbeauty.co/' }],
+  planityUrl: `https://beautinda.de/salon/${BEAUTINDA_SALON_ID}`,
   kartenlink: 'https://www.google.com/maps/search/?api=1&query=Kirchstra%C3%9Fe+11%2C+48282+Emsdetten',
 };
 
@@ -91,6 +103,7 @@ export const treatmentsFallback: Treatment[] = [
     bild: lokalesBild('gesichtsbehandlung', 'Sanfte Massage von Hals und Dekolleté'),
     titel: 'Klassische Gesichtsbehandlung',
     slug: { current: 'klassische-gesichtsbehandlung' },
+    planityUrl: beautindaBuchung('2026-11-11T02:19:00.047730'),
     kategorie: treatmentCategoriesFallback[0],
     kurzbeschreibung:
       'Eine perfekte Kombination aus intensiver Hautpflege und wohltuender Entspannung: gründliche Reinigung, individuell abgestimmte Pflegeprodukte, intensive Feuchtigkeitsversorgung und eine entspannende Gesichtsmassage für ein frisches, strahlendes Hautbild.',
@@ -101,6 +114,7 @@ export const treatmentsFallback: Treatment[] = [
     bild: lokalesBild('tiefenreinigung', 'Tiefenreinigung der Gesichtshaut mit Reinigungsschaum'),
     titel: 'Tiefenreinigung',
     slug: { current: 'tiefenreinigung' },
+    planityUrl: beautindaBuchung('2026-11-11 02:29:29.961402'),
     kategorie: treatmentCategoriesFallback[0],
     kurzbeschreibung:
       'Überschüssiger Talg, abgestorbene Hautzellen und Unreinheiten werden schonend entfernt. Die gezielte Ausreinigung verstopfter Poren unterstützt ein ebenmäßigeres, verfeinertes Hautbild.',
@@ -111,6 +125,7 @@ export const treatmentsFallback: Treatment[] = [
     bild: lokalesBild('hydrafacial', 'Hydrafacial-Behandlung im Gesicht'),
     titel: 'Hydrafacial',
     slug: { current: 'hydrafacial' },
+    planityUrl: beautindaBuchung('2026-11-11 02:30:44.981572'),
     kategorie: treatmentCategoriesFallback[0],
     kurzbeschreibung:
       'Intensive Hautpflege trifft auf moderne Technologie: sanfte Hautabtragung, gründliche Reinigung und intensive Feuchtigkeitsversorgung in einer Behandlung.',
@@ -121,6 +136,7 @@ export const treatmentsFallback: Treatment[] = [
     bild: lokalesBild('diamant-mikrodermabrasion', 'Diamant-Mikrodermabrasion im Gesicht'),
     titel: 'Diamant-Mikrodermabrasion',
     slug: { current: 'diamant-mikrodermabrasion' },
+    planityUrl: beautindaBuchung('2026-11-11 02:31:29.723680'),
     kategorie: treatmentCategoriesFallback[0],
     kurzbeschreibung:
       'Mithilfe eines speziellen Diamantaufsatzes werden abgestorbene Hautzellen schonend abgetragen. Unterstützt die natürliche Hauterneuerung und kann feine Linien sowie Hautunregelmäßigkeiten verbessern.',
@@ -131,6 +147,7 @@ export const treatmentsFallback: Treatment[] = [
     bild: lokalesBild('microneedling', 'Microneedling-Stift auf der Stirn'),
     titel: 'Microneedling Deluxe',
     slug: { current: 'microneedling-deluxe' },
+    planityUrl: beautindaBuchung('2026-11-11 02:32:05.419002'),
     kategorie: treatmentCategoriesFallback[0],
     kurzbeschreibung:
       'Durch den gezielten Einsatz feinster Nadeln werden die natürlichen Regenerationsprozesse der Haut angeregt und die körpereigene Kollagen- und Elastinbildung unterstützt.',
@@ -141,6 +158,7 @@ export const treatmentsFallback: Treatment[] = [
     bild: lokalesBild('mesotherapie', 'Ampullen mit Wirkstoffkomplex für die Mesotherapie'),
     titel: 'Mesotherapie',
     slug: { current: 'mesotherapie' },
+    planityUrl: beautindaBuchung('2026-11-11 02:32:24.008174'),
     kategorie: treatmentCategoriesFallback[0],
     kurzbeschreibung: 'Ausgewählte Wirkstoffkomplexe tragen zur Pflege und intensiven Feuchtigkeitsversorgung der Haut bei.',
     reihenfolge: 6,
@@ -150,6 +168,7 @@ export const treatmentsFallback: Treatment[] = [
     bild: lokalesBild('lash-lifting', 'Lash Lifting an den Wimpern'),
     titel: 'Lash Lifting',
     slug: { current: 'lash-lifting' },
+    planityUrl: beautindaBuchung('2026-11-11 02:33:25.652353'),
     kategorie: treatmentCategoriesFallback[1],
     kurzbeschreibung:
       'Natürlich schöne Wimpern mit elegantem Schwung: Ihre eigenen Wimpern werden sanft angehoben und für mehrere Wochen in Form gebracht – für einen offeneren, ausdrucksstärkeren Blick.',
@@ -160,6 +179,7 @@ export const treatmentsFallback: Treatment[] = [
     bild: lokalesBild('brow-lifting', 'Ergebnis nach dem Brow Lifting'),
     titel: 'Brow Lifting',
     slug: { current: 'brow-lifting' },
+    planityUrl: beautindaBuchung('2026-11-11 02:34:03.189362'),
     kategorie: treatmentCategoriesFallback[1],
     kurzbeschreibung:
       'Die natürlichen Brauenhärchen werden sanft in die gewünschte Form gebracht und fixiert – für vollere, gleichmäßigere und definierte Augenbrauen.',
@@ -170,6 +190,7 @@ export const treatmentsFallback: Treatment[] = [
     bild: lokalesBild('augenbrauenkorrektur', 'Werkzeuge für die Augenbrauenkorrektur'),
     titel: 'Augenbrauenkorrektur',
     slug: { current: 'augenbrauenkorrektur' },
+    planityUrl: beautindaBuchung('2026-11-11 02:34:37.043003'),
     kategorie: treatmentCategoriesFallback[1],
     kurzbeschreibung:
       'Präzise Korrektur überschüssiger Härchen – individuell angepasst an Ihre natürliche Gesichtsform für mehr Ausdruck und Harmonie.',
@@ -180,6 +201,7 @@ export const treatmentsFallback: Treatment[] = [
     bild: lokalesBild('combibrows', 'Combibrows-Behandlung an der Augenbraue'),
     titel: 'Permanent Make-up: Combibrows',
     slug: { current: 'permanent-make-up-combibrows' },
+    planityUrl: beautindaBuchung('2026-11-11 02:37:39.803287'),
     kategorie: treatmentCategoriesFallback[1],
     kurzbeschreibung:
       'Fein gezeichnete Härchen kombiniert mit sanfter Puderschattierung gleichen lichte Stellen optisch aus. Form und Farbton werden individuell auf Gesichtszüge und Haarfarbe abgestimmt.',
@@ -190,6 +212,7 @@ export const treatmentsFallback: Treatment[] = [
     bild: lokalesBild('lip-blushing', 'Pigmentierung der Lippen beim Lip Blushing'),
     titel: 'Permanent Make-up: Lip Blushing',
     slug: { current: 'permanent-make-up-lip-blushing' },
+    planityUrl: beautindaBuchung('2026-11-11 02:38:29.358032'),
     kategorie: treatmentCategoriesFallback[1],
     kurzbeschreibung:
       'Ausgewählte Farbpigmente intensivieren dezent die natürliche Lippenfarbe und betonen die Konturen – Form und Farbton ganz nach Ihren Wünschen.',
@@ -271,7 +294,7 @@ E-Mail: marysbeautyco7@gmail.com
 Mary Ibrahim, Kirchstraße 11, 48282 Emsdetten`;
 
 const datenschutzPlatzhalter = `Diese Webseite nutzt Cloudflare Pages zum Hosting, Sanity als Content-Management-System
-sowie ggf. Planity als externen Buchungsdienst. Beim Besuch dieser Seiten können
+sowie Beautinda als externen Buchungsdienst. Beim Besuch dieser Seiten können
 technisch notwendige Daten (z. B. IP-Adresse, Zugriffszeit) verarbeitet werden.
 
 **Verantwortlicher**
@@ -281,10 +304,10 @@ Marys Beauty, Kirchstraße 11, 48282 Emsdetten, marysbeautyco7@gmail.com
 Diese Website wird bei Cloudflare, Inc. gehostet. Weitere Informationen:
 https://www.cloudflare.com/privacypolicy/
 
-**Externe Terminbuchung (Planity)**
-Für die Online-Terminbuchung wird auf den externen Dienst Planity verlinkt bzw. ein
-Planity-Modul eingebunden. Beim Aufruf der Buchungsseite gelten die Datenschutzbestimmungen
-von Planity.
+**Externe Terminbuchung (Beautinda)**
+Für die Online-Terminbuchung wird auf den externen Dienst Beautinda (Beautinda GmbH)
+verlinkt. Erst beim Aufruf der Buchungsseite werden Daten an Beautinda übertragen; dort
+gelten die Datenschutzbestimmungen von Beautinda: https://beautinda.de/datenschutz
 
 **Ihre Rechte**
 Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung,

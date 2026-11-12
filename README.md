@@ -236,12 +236,14 @@ Alle Buchungs-Buttons laufen über `src/lib/booking.ts`. Das Verhalten ergibt si
 | Gepflegt in Sanity | Verhalten |
 |---|---|
 | nichts (aktueller Stand) | Buttons führen auf `/termin`, dort stehen Telefon und E-Mail |
-| Planity-Buchungslink | Buttons öffnen direkt die Planity-Seite des Studios |
+| Online-Buchungslink (Feld `planityUrl`) | Buttons öffnen direkt die Beautinda-Seite des Studios |
 | White-Label-Einbettungscode | Buttons führen auf `/termin`, dort läuft die Buchung eingebettet |
 
 **Variante A – Einfacher Buchungslink (empfohlen):**
 
-In Sanity unter „Allgemeine Website-Einstellungen" → Feld „Planity-Buchungslink" die echte Planity-URL des Studios eintragen. Die reine Startseite `https://www.planity.com/` gilt als Platzhalter und wird ignoriert.
+Aktuell läuft die Buchung über **Beautinda** (Salon-ID `pkRTjJWdfyqUFk88REa6`). Der allgemeine Link ist die Salonseite `https://beautinda.de/salon/<Salon-ID>`. Die reinen Startseiten von Planity und Beautinda gelten als Platzhalter und werden ignoriert.
+
+**Direktlinks pro Behandlung:** `https://beautinda.de/book/<Salon-ID>/select?services=<Leistungs-ID>` wählt die Behandlung vor und springt direkt zur Terminauswahl (mehrere IDs kommagetrennt möglich). Die Leistungs-IDs stehen im Seitenquelltext der Salonseite (`__NEXT_DATA__` → `salon` → Leistungen, Feld `id`). Die Links sind in `src/lib/content.ts` (`beautindaBuchung(...)`) hinterlegt und lassen sich pro Behandlung in Sanity im Feld „Direkter Buchungslink“ überschreiben. Für die Laserhaarentfernung (12 Zonen) gibt es bewusst keinen Direktlink.
 
 **Variante B – Offizielles White-Label-Modul (optional, muss von Planity freigeschaltet sein):**
 

@@ -52,10 +52,10 @@ export default defineType({
     }),
     defineField({
       name: 'planityUrl',
-      title: 'Abweichender Buchungslink (optional)',
+      title: 'Direkter Buchungslink (optional)',
       type: 'url',
       description:
-        'Nur ausfüllen, falls diese Behandlung in Planity einen eigenen Buchungslink hat. Ansonsten wird automatisch der allgemeine Planity-Link verwendet.',
+        'Link, der diese Behandlung bei Beautinda direkt vorauswählt (Form: https://beautinda.de/book/<Salon-ID>/select?services=<Leistungs-ID>). Leer lassen, dann wird der allgemeine Buchungslink verwendet.',
       validation: (Rule) => Rule.uri({ scheme: ['http', 'https'] }),
     }),
     defineField({

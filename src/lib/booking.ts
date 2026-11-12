@@ -1,24 +1,29 @@
 import type { SiteSettings } from '../types/sanity';
 
 /**
- * Zentrale Logik für die Planity-Anbindung. Alle Buchungs-Buttons der Seite
- * nutzen diese Funktionen, das Verhalten ergibt sich allein aus den Sanity-Feldern:
+ * Zentrale Logik für die Online-Buchung (aktuell Beautinda). Alle Buchungs-Buttons
+ * der Seite nutzen diese Funktionen, das Verhalten ergibt sich allein aus den
+ * Feldern in Sanity bzw. den Startinhalten (src/lib/content.ts):
  *
- * - embed: Planity-Einbettungscode gepflegt, Buchung läuft auf /termin
- * - link: echter Planity-Link gepflegt, Buttons führen direkt zu Planity
+ * - embed: Einbettungscode gepflegt, Buchung läuft auf /termin
+ * - link: echter Buchungslink gepflegt, Buttons führen direkt zur Buchungsseite;
+ *   Behandlungen mit eigenem Link springen direkt zur Terminauswahl
  * - kontakt: noch nichts gepflegt, /termin zeigt Telefon und E-Mail
+ *
+ * Die Sanity-Felder heißen aus historischen Gründen weiter planityUrl/planityEmbedCode.
  */
 export type BookingMode = 'embed' | 'link' | 'kontakt';
 
 export const BOOKING_PAGE = '/termin';
 
-/** Die reine Planity-Startseite gilt als Platzhalter, nicht als Buchungslink. */
+/** Die reinen Startseiten der Buchungsportale gelten als Platzhalter, nicht als Buchungslink. */
 export function isRealBookingUrl(url?: string | null): url is string {
   if (!url?.trim()) return false;
   try {
     const parsed = new URL(url);
-    const isPlanityHome = parsed.hostname.endsWith('planity.com') && parsed.pathname.replace(/\/+$/, '') === '';
-    return /^https?:$/.test(parsed.protocol) && !isPlanityHome;
+    const isPortalHome =
+      /(^|\.)(planity\.com|beautinda\.de)$/.test(parsed.hostname) && parsed.pathname.replace(/\/+$/, '') === '';
+    return /^https?:$/.test(parsed.protocol) && !isPortalHome;
   } catch {
     return false;
   }

@@ -25,14 +25,14 @@ const modus = getBookingMode(siteSettings);
   <section class="section">
     <div class="container">
       {modus === 'embed' && (
-        /* Offizieller Planity-Code aus den Website-Einstellungen in Sanity.
+        /* Offizieller Einbettungscode aus den Website-Einstellungen in Sanity.
            Die Sicherheitsregeln dafür stehen in public/_headers (Block /termin). */
         <div class="planity-embed" set:html={siteSettings.planityEmbedCode} />
       )}
 
       {modus === 'link' && (
         <div class="empty-state">
-          <p class="section-lead mx-auto mb-4">Die Buchung öffnet sich in einem neuen Tab bei unserem Partner Planity.</p>
+          <p class="section-lead mx-auto mb-4">Die Buchung öffnet sich in einem neuen Tab bei unserem Partner Beautinda.</p>
           <a class="btn btn-primary btn-lg" href={siteSettings.planityUrl} target="_blank" rel="noopener noreferrer" data-planity-booking>
             Zur Online-Buchung
           </a>
